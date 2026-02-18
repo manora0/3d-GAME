@@ -1,0 +1,41 @@
+[gd_scene format=3 uid="uid://wuey7o70iomn"]
+
+[ext_resource type="Texture2D" uid="uid://c8arnlq67qi7" path="res://assets/lukky-nl-third_person_controller_assets-bd10196/textures/grids/Dark/texture_05.png" id="1_pq8q7"]
+[ext_resource type="PackedScene" uid="uid://dtu47tcfl5erm" path="res://Imported_Chara.tscn" id="2_pyidc"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_pyidc"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_vvh5c"]
+sky_material = SubResource("ProceduralSkyMaterial_pyidc")
+
+[sub_resource type="Environment" id="Environment_28aoi"]
+background_mode = 2
+sky = SubResource("Sky_vvh5c")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pyidc"]
+albedo_texture = ExtResource("1_pq8q7")
+uv1_scale = Vector3(5, 5, 5)
+uv1_triplanar = true
+
+[node name="root" type="Node3D" unique_id=2027728857]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=732473274]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1195657461]
+environment = SubResource("Environment_28aoi")
+
+[node name="map" type="Node3D" parent="." unique_id=1981047146]
+
+[node name="CSGBox3D" type="CSGBox3D" parent="map" unique_id=1590652690]
+transform = Transform3D(1023.925, 0, 0, 0, 1.025, 0, 0, 0, 1023.961, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_pyidc")
+use_collision = true
+
+[node name="ImportedChara" parent="." unique_id=890540683 instance=ExtResource("2_pyidc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.76355743, 0)
