@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://wuey7o70iomn"]
 
 [ext_resource type="Texture2D" uid="uid://c8arnlq67qi7" path="res://assets/lukky-nl-third_person_controller_assets-bd10196/textures/grids/Dark/texture_05.png" id="1_pq8q7"]
-[ext_resource type="PackedScene" uid="uid://dtu47tcfl5erm" path="res://Imported_Chara.tscn" id="2_pyidc"]
+[ext_resource type="PackedScene" uid="uid://dtu47tcfl5erm" path="res://Scenes/Player/Imported_Chara.tscn" id="2_pyidc"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_pyidc"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)

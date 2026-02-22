@@ -1,11 +1,7 @@
-extends Node
-class_name State
-
-signal Transitioned	
-var player : Player
+extends State
 
 func Enter():
-	pass
+	player.anim.play("Walk")
 	
 func Exit():
 	pass
