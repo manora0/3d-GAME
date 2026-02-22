@@ -39,11 +39,12 @@ func on_child_transition(state, new_state_name):
 		current_state.Exit()
 	
 	new_state.Enter()
+	print('new state transitioned from ' + state.name + ' to ' + new_state_name)
 	current_state = new_state
 	
-	var label3d = get_parent().get_node("Head/StateLabel3D") as Label3D
+	var label3d = get_parent().get_node("head/StateLabel3D") as Label3D
 	if label3d:
-		label3d.text = new_state_name.capitalized()
+		label3d.text = new_state_name
 		
 func force_change_state(new_state_name):
 	var new_state = states.get(new_state_name.to_lower())
@@ -59,3 +60,6 @@ func force_change_state(new_state_name):
 	var label3d = get_parent().get_node("Head/StateLabel3D") as Label3D
 	if label3d:
 		label3d.text = new_state_name.capitalized()
+		print("label")
+	else:
+		print("nolable")

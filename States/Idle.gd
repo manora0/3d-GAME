@@ -4,7 +4,8 @@ class_name Idle
 var move_direction : Vector3
 
 func Enter():
-	player.anim.play("Idle")
+	if player.anim:
+		player.anim.play("Idle")
 	
 func Exit():
 	pass
@@ -15,10 +16,15 @@ func Update(_delta: float):
 func Physics_Update(_delta: float):
 	var input_dir := Input.get_vector("move_left", "move_right", "move_back", "move_forward")
 	
+	player.velocity.x = move_toward(player.velocity.x, 0, player.SPEED)
+	player.velocity.z = move_toward(player.velocity.z, 0, player.SPEED)
+	
 	if input_dir != Vector2.ZERO:
-		print('HERE')
-		Transitioned.emit(self, "walk")
-		
+		if Input.is_action_pressed("run"):
+			Transitioned.emit(self, "run")
+		else:
+			Transitioned.emit(self, "walk")
+
 	if Input.is_action_just_pressed("jump"):
 		Transitioned.emit(self, "jump")
 	

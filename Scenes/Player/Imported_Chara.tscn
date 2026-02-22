@@ -5,6 +5,8 @@
 [ext_resource type="Script" uid="uid://ufbk65qaew0" path="res://States/Idle.gd" id="3_4rxg1"]
 [ext_resource type="Script" uid="uid://cdf7llitbc4k" path="res://Scripts/Player/Walk.gd" id="4_nb3p3"]
 [ext_resource type="Script" uid="uid://cc81tv6ioctbt" path="res://States/State.gd" id="4_vngwu"]
+[ext_resource type="Script" uid="uid://ddv88mxhc5ckf" path="res://Scenes/Player/jump.gd" id="5_rfgwe"]
+[ext_resource type="Script" uid="uid://2k68ndecp5bd" path="res://Scenes/Player/run.gd" id="7_jvi50"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yqn6r"]
 resource_name = "M_Main"
@@ -19089,9 +19091,8 @@ radius = 0.6044922
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_76ikp"]
 
-[node name="ImportedChara" type="CharacterBody3D" unique_id=890540683 node_paths=PackedStringArray("anim", "state_machine")]
+[node name="ImportedChara" type="CharacterBody3D" unique_id=890540683 node_paths=PackedStringArray("state_machine")]
 script = ExtResource("1_76ikp")
-anim = NodePath("Model/AnimationPlayer")
 state_machine = NodePath("StateMachine")
 
 [node name="Model" type="Node3D" parent="." unique_id=949199056]
@@ -19594,6 +19595,10 @@ script = ExtResource("3_4rxg1")
 script = ExtResource("4_nb3p3")
 
 [node name="Jump" type="Node" parent="StateMachine" unique_id=1691223705]
+script = ExtResource("5_rfgwe")
 
 [node name="State" type="Node" parent="StateMachine" unique_id=1654401405]
 script = ExtResource("4_vngwu")
+
+[node name="Run" type="Node" parent="StateMachine" unique_id=607419772]
+script = ExtResource("7_jvi50")

@@ -1,10 +1,13 @@
 extends CharacterBody3D
 class_name Player
 
-@export var anim: AnimationPlayer 
+@onready var anim: AnimationPlayer = $Model/AnimationPlayer
 @export var state_machine : StateMachine
+@onready var model = $Model
+@onready var label = $head/StateLabel3D
 
 const SPEED = 5.0
+const RUNSPEED = 30.0
 const JUMP_VELOCITY = 8.5
 
 func _ready() -> void:
@@ -32,15 +35,14 @@ func _process(_delta: float) -> void:
 	pass
 
 func _physics_process(delta: float) -> void:
-	
 	if not is_on_floor():
 		velocity += get_gravity() * delta * 2
 	
-	move_and_slide()
 	state_machine.current_state.Physics_Update(delta)
+	move_and_slide()
 	
-		
-
+		#
+#
 	## Handle jump.
 	#if Input.is_action_just_pressed("ui_accept"):
 		#velocity.y = JUMP_VELOCITY
