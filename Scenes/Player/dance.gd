@@ -2,7 +2,9 @@ extends State
 
 
 func Enter():
-	player.anim.play("d/Dance")
+	if player.anim:
+		player.anim.play("d/Dance")
+
 	
 func Exit():
 	pass

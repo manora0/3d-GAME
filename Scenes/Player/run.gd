@@ -1,12 +1,19 @@
 extends State
 
+var playback_path = "parameters/Locomotion/playback"
+var playback
+
+var sprint_state_machine = "parameters/Locomotion/Running/playback"
+var sprint_state 
+
+
 func Enter():
-	if player.anim:
-		print("RUNNIN")
-		player.anim.play("Sprint")
-	
+	var playback = player.animationtree.get(playback_path) as AnimationNodeStateMachinePlayback
+	playback.travel("Running")
+
 func Exit():
-	pass
+	var sprint_state = player.animationtree.get(sprint_state_machine) as AnimationNodeStateMachinePlayback
+	sprint_state.travel("d_Sprint_Exit")
 	
 func Update(_delta: float):
 	pass
@@ -31,3 +38,9 @@ func Physics_Update(_delta: float):
 		
 	if not Input.is_action_pressed("run"):
 		Transitioned.emit(self, "Walk")
+		
+	if Input.is_action_pressed("slide"):
+		Transitioned.emit(self, "Slide")
+
+func enter_run():
+	playback.travel("Running")

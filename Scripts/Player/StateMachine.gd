@@ -4,6 +4,7 @@ class_name StateMachine
 
 @export var initial_state : State
 
+var prev_state : State
 var current_state : State
 var states : Dictionary = {}
 
@@ -38,6 +39,7 @@ func on_child_transition(state, new_state_name):
 	if current_state:
 		current_state.Exit()
 	
+	prev_state = current_state
 	new_state.Enter()
 	print('new state transitioned from ' + state.name + ' to ' + new_state_name)
 	current_state = new_state
@@ -54,6 +56,7 @@ func force_change_state(new_state_name):
 	if current_state:
 		current_state.Exit()
 	
+	prev_state = current_state
 	new_state.Enter()
 	current_state = new_state
 	

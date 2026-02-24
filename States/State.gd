@@ -2,7 +2,7 @@ extends Node
 class_name State
 
 signal Transitioned	
-var player : Player
+@onready var player : Player
 
 func Enter():
 	pass
