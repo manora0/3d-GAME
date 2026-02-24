@@ -1,14 +1,17 @@
 extends State
 
 func Enter():
-	player.anim.play("Walk")
+	if player.anim:
+		player.anim.play("default/Walk")
+	else:
+		print("NO EWALK")
 	
 func Exit():
 	pass
 	
 func Update(_delta: float):
 	pass
-	
+
 func Physics_Update(_delta: float):
 	var input_dir := Input.get_vector("move_left", "move_right", "move_back", "move_forward")
 	

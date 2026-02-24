@@ -5,13 +5,14 @@ var move_direction : Vector3
 
 func Enter():
 	if player.anim:
-		player.anim.play("Idle")
+		player.anim.play("d/Idle")
 	
 func Exit():
 	pass
 	
 func Update(_delta: float):
-	pass
+	if Input.is_action_just_pressed("Dance"):
+		Transitioned.emit(self, "Dance")
 	
 func Physics_Update(_delta: float):
 	var input_dir := Input.get_vector("move_left", "move_right", "move_back", "move_forward")

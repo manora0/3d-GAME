@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://wuey7o70iomn"]
 
 [ext_resource type="Texture2D" uid="uid://c8arnlq67qi7" path="res://assets/lukky-nl-third_person_controller_assets-bd10196/textures/grids/Dark/texture_05.png" id="1_pq8q7"]
-[ext_resource type="PackedScene" uid="uid://dtu47tcfl5erm" path="res://Scenes/Player/Imported_Chara.tscn" id="2_pyidc"]
+[ext_resource type="PackedScene" uid="uid://dwurdfr0yke7i" path="res://Scenes/Player/Player.tscn" id="2_f4vyf"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_pyidc"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -37,5 +37,4 @@ transform = Transform3D(1023.925, 0, 0, 0, 1.025, 0, 0, 0, 1023.961, 0, 0, 0)
 material_override = SubResource("StandardMaterial3D_pyidc")
 use_collision = true
 
-[node name="ImportedChara" parent="." unique_id=890540683 instance=ExtResource("2_pyidc")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.76355743, 0)
+[node name="CharacterBody3D" parent="." unique_id=2095429027 instance=ExtResource("2_f4vyf")]
