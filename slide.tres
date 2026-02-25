@@ -44,4 +44,4 @@ states/Slide_Exit/position = Vector2(710, 100)
 states/Slide_Start/node = SubResource("AnimationNodeAnimation_0u84n")
 states/Slide_Start/position = Vector2(381, 100)
 transitions = ["Start", "Slide_Start", SubResource("AnimationNodeStateMachineTransition_esmjy"), "Slide_Start", "Slide", SubResource("AnimationNodeStateMachineTransition_6tu5v"), "Slide", "Slide_Exit", SubResource("AnimationNodeStateMachineTransition_spxdj"), "Slide_Exit", "End", SubResource("AnimationNodeStateMachineTransition_0objx"), "Slide_Start", "Slide_Exit", SubResource("AnimationNodeStateMachineTransition_u5meb")]
-graph_offset = Vector2(-301, -35)
+graph_offset = Vector2(-62, -53)

@@ -3,32 +3,41 @@
 [ext_resource type="Texture2D" uid="uid://c8arnlq67qi7" path="res://assets/lukky-nl-third_person_controller_assets-bd10196/textures/grids/Dark/texture_05.png" id="1_pq8q7"]
 [ext_resource type="PackedScene" uid="uid://dwurdfr0yke7i" path="res://Scenes/Player/Player.tscn" id="2_f4vyf"]
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_pyidc"]
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_f4vyf"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
 ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
 
-[sub_resource type="Sky" id="Sky_vvh5c"]
-sky_material = SubResource("ProceduralSkyMaterial_pyidc")
+[sub_resource type="Sky" id="Sky_gq5pf"]
+sky_material = SubResource("ProceduralSkyMaterial_f4vyf")
 
-[sub_resource type="Environment" id="Environment_28aoi"]
+[sub_resource type="Environment" id="Environment_0gnig"]
 background_mode = 2
-sky = SubResource("Sky_vvh5c")
+sky = SubResource("Sky_gq5pf")
 tonemap_mode = 2
 glow_enabled = true
+
+[sub_resource type="CameraAttributesPhysical" id="CameraAttributesPhysical_f4vyf"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pyidc"]
 albedo_texture = ExtResource("1_pq8q7")
 uv1_scale = Vector3(5, 5, 5)
 uv1_triplanar = true
 
+[sub_resource type="PrismMesh" id="PrismMesh_f4vyf"]
+left_to_right = 0.0
+size = Vector3(34.96, 25.375, 17.56)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gq5pf"]
+
 [node name="root" type="Node3D" unique_id=2027728857]
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=732473274]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=679389987]
+environment = SubResource("Environment_0gnig")
+camera_attributes = SubResource("CameraAttributesPhysical_f4vyf")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1146857799]
 transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
 shadow_enabled = true
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1195657461]
-environment = SubResource("Environment_28aoi")
 
 [node name="map" type="Node3D" parent="." unique_id=1981047146]
 
@@ -48,6 +57,7 @@ size = Vector3(1, 15.825684, 45.347046)
 
 [node name="CSGBox3D4" type="CSGBox3D" parent="map" unique_id=1563075783]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.690186, 1.0804236, 0)
+use_collision = true
 size = Vector3(16.680786, 1, 1)
 
 [node name="CSGBox3D4" type="CSGBox3D" parent="map/CSGBox3D4" unique_id=51942564]
@@ -105,7 +115,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.848114, 1.0804236, 0.98692
 use_collision = true
 size = Vector3(36.36493, 1, 1)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="map" unique_id=231180579]
+[node name="CSGMesh3D" type="CSGMesh3D" parent="map" unique_id=241098640]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -20.134918, 13.169299, 0)
+use_collision = true
+mesh = SubResource("PrismMesh_f4vyf")
+material = SubResource("StandardMaterial3D_gq5pf")
 
-[node name="CharacterBody3D" parent="." unique_id=2095429027 instance=ExtResource("2_f4vyf")]
-transform = Transform3D(2.005, 0, 0, 0, 2.005, 0, 0, 0, 2.005, 0, 0.5906582, 0)
+[node name="Player" parent="." unique_id=2095429027 instance=ExtResource("2_f4vyf")]

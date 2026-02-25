@@ -7,6 +7,7 @@ class_name Player
 @onready var anim: AnimationPlayer = $UAL2/AnimationPlayer
 @onready var model = $UAL2
 @onready var label = $head/StateLabel3D
+@onready var head = $head
 
 @onready var standing_shape = $DefaultCollision
 @onready var crouch_shape = $CrouchCollision
@@ -22,6 +23,7 @@ var crouch_blend = "parameters/locomotion/crouch/crouching/blend_position"
 var walk_blend = "parameters/locomotion/walk/blend_position"
 
 @export var ray : RayCast3D
+
 
 
 enum collision_type {STANDING, CROUCHING, JUMPING}

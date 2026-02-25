@@ -2,17 +2,16 @@ extends State
 
 
 func Enter():
-	if player.anim:
-		player.anim.play("d/Dance")
+	player.locomotion.travel("d_Dance")
 
 	
 func Exit():
-	pass
+	player.locomotion.travel("walk")
 	
 func Physics_Update(_delta: float):
 	pass
 		
 	
 func Update(_delta:float):
-	if Input.is_action_just_pressed("Dance"):
+	if not Input.is_action_pressed("Dance"):
 		Transitioned.emit(self, "Idle")

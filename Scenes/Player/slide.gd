@@ -4,9 +4,11 @@ var path = "parameters/Transition/current_state"
 var path2 = "parameters/Transition/transition_request"
 
 func Enter():
+	player.head.lock_body(false)
 	player.locomotion.travel("slide")
 
 func Exit():
+	player.head.lock_body(true)
 	player.slide.travel("Slide_Exit")
 	
 func Physics_Update(_delta: float):

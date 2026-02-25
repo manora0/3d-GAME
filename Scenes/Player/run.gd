@@ -8,12 +8,13 @@ var sprint_state
 
 
 func Enter():
-
 	player.locomotion.travel("sprint")
 
 func Exit():
 	player.sprint.travel("d_Sprint_Exit")
-	player.model.look_at(player.transform.origin, Vector3.UP)
+	
+	player.rotation.y = player.head.global_rotation.y
+	player.model.rotation = Vector3.ZERO
 	
 func Update(_delta: float):
 	pass
