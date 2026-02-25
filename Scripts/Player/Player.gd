@@ -1,5 +1,5 @@
 extends CharacterBody3D
-class_name Player
+
 
 @onready var anim: AnimationPlayer = $Model/AnimationPlayer
 @export var state_machine : StateMachine

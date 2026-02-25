@@ -1,5 +1,4 @@
 extends Node
-
 class_name StateMachine
 
 @export var initial_state : State
@@ -66,3 +65,7 @@ func force_change_state(new_state_name):
 		print("label")
 	else:
 		print("nolable")
+		
+
+
+	

@@ -1,12 +1,21 @@
 extends State
 
+var transition_current_state = "parameters/Transition/current_state"
+var transition_state_request = "parameters/Transition/transition_request"
+
+var crouch_state_machine_path = "parameters/Crouch/Crouching/blend_position"
+var c_state_machine
+
+var crouch_blend_position = "parameters/Crouch/Crouching/blend_position"
+
+
+
 var transitionSpeed = 3
 var cur_velocity : Vector2 
 var cur_input : Vector2
 
-
 func Enter():
-	pass
+		player.animationtree[transition_state_request] = "state_2"
 	
 func Exit():
 	pass
@@ -14,11 +23,12 @@ func Exit():
 func Update(_delta: float):
 	player.current_velocity = player.current_velocity.move_toward(cur_input, transitionSpeed * _delta)
 	if player.animationtree:
-		player.animationtree["parameters/Locomotion/walking/blend_position"] = player.current_velocity
+		player.animationtree[crouch_blend_position] = player.current_velocity
 	
-	check_state_change()
+	if not Input.is_action_pressed("slide"):
+		player.animationtree[transition_state_request] = "state_0"
+		Transitioned.emit(self, "Walk")
 	
-
 func Physics_Update(_delta: float):
 	cur_input = Input.get_vector("move_left", "move_right", "move_back", "move_forward")
 	

@@ -6,6 +6,7 @@ var playback_path = "parameters/Locomotion/playback"
 func Enter():
 	begin_jump()
 	can_jump = true
+	player.request_collision_shape(player.collision_type.JUMPING)
 	
 func Exit():
 	pass
