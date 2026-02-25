@@ -4,15 +4,20 @@ var path = "parameters/Transition/current_state"
 var path2 = "parameters/Transition/transition_request"
 
 func Enter():
-	player.animationtree[path2] = "state_1"
+	player.locomotion.travel("slide")
 
 func Exit():
-	pass
+	player.slide.travel("Slide_Exit")
 	
 func Physics_Update(_delta: float):
 	pass
 	
 func Update(_delta:float):
 	if not Input.is_action_pressed("slide"):
-		player.animationtree[path2] = "state_0"
-		Transitioned.emit(self, "Run")
+		if Input.is_action_pressed("run"):
+			player.sprint.travel("d_Sprint")
+			Transitioned.emit(self, "Run")
+		else:
+			Transitioned.emit(self,"Walk")
+	if Input.is_action_pressed("jump"):
+		Transitioned.emit(self, "Jump")

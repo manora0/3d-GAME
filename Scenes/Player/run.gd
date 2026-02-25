@@ -8,12 +8,12 @@ var sprint_state
 
 
 func Enter():
-	var playback = player.animationtree.get(playback_path) as AnimationNodeStateMachinePlayback
-	playback.travel("Running")
+
+	player.locomotion.travel("sprint")
 
 func Exit():
-	var sprint_state = player.animationtree.get(sprint_state_machine) as AnimationNodeStateMachinePlayback
-	sprint_state.travel("d_Sprint_Exit")
+	player.sprint.travel("d_Sprint_Exit")
+	player.model.look_at(player.transform.origin, Vector3.UP)
 	
 func Update(_delta: float):
 	pass

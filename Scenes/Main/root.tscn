@@ -38,8 +38,74 @@ material_override = SubResource("StandardMaterial3D_pyidc")
 use_collision = true
 
 [node name="CSGBox3D2" type="CSGBox3D" parent="map" unique_id=8652580]
-transform = Transform3D(4.765, 0, 0, 0, 4.765, 0, 0, 0, 4.765, 0, 3.006137, 20.253841)
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 2.1123276, 3.9329624)
 use_collision = true
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="map" unique_id=555912504]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28.376137, 8.69102, -4.0896797)
+use_collision = true
+size = Vector3(1, 15.825684, 45.347046)
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="map" unique_id=1563075783]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.690186, 1.0804236, 0)
+size = Vector3(16.680786, 1, 1)
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="map/CSGBox3D4" unique_id=51942564]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.10452652, 1.0804236, 0.98921704)
+use_collision = true
+size = Vector3(16.680786, 1, 1)
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="map/CSGBox3D4/CSGBox3D4" unique_id=1389569567]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.042995453, 1.0804236, 0.97474957)
+use_collision = true
+size = Vector3(16.680786, 1, 1)
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="map/CSGBox3D4/CSGBox3D4/CSGBox3D4" unique_id=705326621]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.848114, 1.0804236, 0.98692846)
+use_collision = true
+size = Vector3(36.36493, 1, 1)
+
+[node name="CSGBox3D5" type="CSGBox3D" parent="map" unique_id=480851301]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.690186, 4.3031864, 3.922803)
+use_collision = true
+size = Vector3(16.680786, 1, 1)
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="map/CSGBox3D5" unique_id=1563347445]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.10452652, 1.0804236, 0.98921704)
+use_collision = true
+size = Vector3(16.680786, 1, 1)
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="map/CSGBox3D5/CSGBox3D4" unique_id=268638248]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.042995453, 1.0804236, 0.97474957)
+use_collision = true
+size = Vector3(16.680786, 1, 1)
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="map/CSGBox3D5/CSGBox3D4/CSGBox3D4" unique_id=2084605409]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.848114, 1.0804236, 0.98692846)
+use_collision = true
+size = Vector3(36.36493, 1, 1)
+
+[node name="CSGBox3D6" type="CSGBox3D" parent="map" unique_id=1049397274]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.690186, 8.505066, 7.9079213)
+use_collision = true
+size = Vector3(16.680786, 1, 1)
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="map/CSGBox3D6" unique_id=1285460136]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.10452652, 1.0804236, 0.98921704)
+use_collision = true
+size = Vector3(16.680786, 1, 1)
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="map/CSGBox3D6/CSGBox3D4" unique_id=408431853]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.042995453, 1.0804236, 0.97474957)
+use_collision = true
+size = Vector3(16.680786, 1, 1)
+
+[node name="CSGBox3D4" type="CSGBox3D" parent="map/CSGBox3D6/CSGBox3D4/CSGBox3D4" unique_id=1319887938]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.848114, 1.0804236, 0.98692846)
+use_collision = true
+size = Vector3(36.36493, 1, 1)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="map" unique_id=231180579]
 
 [node name="CharacterBody3D" parent="." unique_id=2095429027 instance=ExtResource("2_f4vyf")]
 transform = Transform3D(2.005, 0, 0, 0, 2.005, 0, 0, 0, 2.005, 0, 0.5906582, 0)

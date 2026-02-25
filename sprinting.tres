@@ -1,0 +1,55 @@
+[gd_resource type="AnimationNodeStateMachine" format=3 uid="uid://87q75yd7roc4"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_lw74r"]
+animation = &"d/Sprint"
+use_custom_timeline = true
+timeline_length = 0.8
+stretch_time_scale = true
+start_offset = 0.0
+loop_mode = 1
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_tf3ct"]
+animation = &"d/Sprint_Enter"
+use_custom_timeline = true
+timeline_length = 0.5
+stretch_time_scale = true
+start_offset = 0.0
+loop_mode = 0
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_to4uw"]
+animation = &"d/Sprint_Exit"
+use_custom_timeline = true
+timeline_length = 0.6
+stretch_time_scale = true
+start_offset = 0.0
+loop_mode = 0
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_p7cr0"]
+xfade_time = 0.1
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_vrod0"]
+xfade_time = 0.2
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_fcbn2"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_hjq2i"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_blyyi"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_bklxe"]
+
+[resource]
+states/End/position = Vector2(1099, 100)
+states/d_Sprint/node = SubResource("AnimationNodeAnimation_lw74r")
+states/d_Sprint/position = Vector2(651, 100)
+states/d_Sprint_Enter/node = SubResource("AnimationNodeAnimation_tf3ct")
+states/d_Sprint_Enter/position = Vector2(421, 207)
+states/d_Sprint_Exit/node = SubResource("AnimationNodeAnimation_to4uw")
+states/d_Sprint_Exit/position = Vector2(871, 100)
+transitions = ["Start", "d_Sprint_Enter", SubResource("AnimationNodeStateMachineTransition_p7cr0"), "d_Sprint_Enter", "d_Sprint", SubResource("AnimationNodeStateMachineTransition_vrod0"), "d_Sprint", "d_Sprint_Exit", SubResource("AnimationNodeStateMachineTransition_fcbn2"), "d_Sprint_Exit", "End", SubResource("AnimationNodeStateMachineTransition_hjq2i"), "Start", "d_Sprint", SubResource("AnimationNodeStateMachineTransition_blyyi"), "d_Sprint_Enter", "d_Sprint_Exit", SubResource("AnimationNodeStateMachineTransition_bklxe")]
+graph_offset = Vector2(-254, 14)

@@ -58,14 +58,9 @@ func force_change_state(new_state_name):
 	prev_state = current_state
 	new_state.Enter()
 	current_state = new_state
+
+	print('new state transitioned to ' + new_state_name)
 	
-	var label3d = get_parent().get_node("Head/StateLabel3D") as Label3D
+	var label3d = get_parent().get_node("head/StateLabel3D") as Label3D
 	if label3d:
-		label3d.text = new_state_name.capitalized()
-		print("label")
-	else:
-		print("nolable")
-		
-
-
-	
+		label3d.text = new_state_name

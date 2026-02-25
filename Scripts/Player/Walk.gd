@@ -6,7 +6,7 @@ var cur_input : Vector2
 
 
 func Enter():
-	pass
+	player.locomotion.travel("walk")
 	
 func Exit():
 	pass
@@ -14,7 +14,7 @@ func Exit():
 func Update(_delta: float):
 	player.current_velocity = player.current_velocity.move_toward(cur_input, transitionSpeed * _delta)
 	if player.animationtree:
-		player.animationtree["parameters/Locomotion/walking/blend_position"] = player.current_velocity
+		player.animationtree[player.walk_blend] = player.current_velocity
 	
 	check_state_change()
 	
@@ -37,3 +37,6 @@ func check_state_change():
 		
 	if Input.is_action_just_pressed("run"):
 		Transitioned.emit(self, "Run")
+		
+	if Input.is_action_pressed("slide"):
+		Transitioned.emit(self, "Crouch")
