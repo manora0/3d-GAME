@@ -9,8 +9,6 @@ var sprint_state
 
 func Enter():
 	player.locomotion.travel("sprint")
-	if player.state_machine.prev_state.name.to_lower() == "Slide":
-		player.sprint.travel("d_Sprint")
 
 func Exit():
 	player.sprint.travel("d_Sprint_Exit")

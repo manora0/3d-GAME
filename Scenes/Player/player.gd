@@ -18,6 +18,7 @@ class_name Player
 @onready var slide : AnimationNodeStateMachinePlayback = animationtree.get("parameters/locomotion/slide/playback")
 @onready var sprint : AnimationNodeStateMachinePlayback = animationtree.get("parameters/locomotion/sprint/playback")
 @onready var falling : AnimationNodeStateMachinePlayback = animationtree.get("parameters/falling_state/playback")
+var midair_blend2 = "parameters/midairs/blend_amount"
 var midair_oneshot = "parameters/midair/request"
 var crouch_blend = "parameters/locomotion/crouch/crouching/blend_position"
 var walk_blend = "parameters/locomotion/walk/blend_position"
@@ -55,6 +56,8 @@ func _process(delta: float) -> void:
 func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		velocity += get_gravity() * delta * 2
+	
+	current_input = Input.get_vector("move_left", "move_right", "move_forward", "move_back")
 	
 	state_machine.current_state.Physics_Update(delta)
 	move_and_slide()

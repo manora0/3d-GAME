@@ -44,6 +44,8 @@ advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_bklxe"]
 
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_4f6pc"]
+
 [resource]
 states/End/position = Vector2(1099, 100)
 states/d_Sprint/node = SubResource("AnimationNodeAnimation_lw74r")
@@ -52,5 +54,5 @@ states/d_Sprint_Enter/node = SubResource("AnimationNodeAnimation_tf3ct")
 states/d_Sprint_Enter/position = Vector2(420.2, 207)
 states/d_Sprint_Exit/node = SubResource("AnimationNodeAnimation_to4uw")
 states/d_Sprint_Exit/position = Vector2(872.6, 100)
-transitions = ["Start", "d_Sprint_Enter", SubResource("AnimationNodeStateMachineTransition_p7cr0"), "d_Sprint_Enter", "d_Sprint", SubResource("AnimationNodeStateMachineTransition_vrod0"), "d_Sprint", "d_Sprint_Exit", SubResource("AnimationNodeStateMachineTransition_fcbn2"), "d_Sprint_Exit", "End", SubResource("AnimationNodeStateMachineTransition_hjq2i"), "Start", "d_Sprint", SubResource("AnimationNodeStateMachineTransition_blyyi"), "d_Sprint_Enter", "d_Sprint_Exit", SubResource("AnimationNodeStateMachineTransition_bklxe")]
-graph_offset = Vector2(209, 13)
+transitions = ["Start", "d_Sprint_Enter", SubResource("AnimationNodeStateMachineTransition_p7cr0"), "d_Sprint_Enter", "d_Sprint", SubResource("AnimationNodeStateMachineTransition_vrod0"), "d_Sprint", "d_Sprint_Exit", SubResource("AnimationNodeStateMachineTransition_fcbn2"), "d_Sprint_Exit", "End", SubResource("AnimationNodeStateMachineTransition_hjq2i"), "Start", "d_Sprint", SubResource("AnimationNodeStateMachineTransition_blyyi"), "d_Sprint_Enter", "d_Sprint_Exit", SubResource("AnimationNodeStateMachineTransition_bklxe"), "d_Sprint_Exit", "d_Sprint", SubResource("AnimationNodeStateMachineTransition_4f6pc")]
+graph_offset = Vector2(-105, -91)

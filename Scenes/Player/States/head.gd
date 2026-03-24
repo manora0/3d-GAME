@@ -23,12 +23,12 @@ func _input(event: InputEvent) -> void:
 			
 
 func rotate_body(vector: Vector2) -> void:
-	player.rotate_y(vector.x * -.001)
+	player.rotate_y(vector.x * .001)
 	var clamped = clamp(self.rotation.x + vector.y * .001, -1.5, 1.5)
 	self.rotation.x = clamped
 
 func rotate_camera(vector: Vector2) -> void:
-	player.head.rotate_y(vector.x * -.001)
+	player.head.rotate_y(vector.x * .001)
 	var clamped = clamp(self.rotation.x + vector.y * .001, -1.5, 1.5)
 	self.rotation.x = clamped
 
