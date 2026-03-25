@@ -2,7 +2,6 @@ extends Node
 class_name StateMachine
 
 @export var initial_state : State
-
 var prev_state : State
 var current_state : State
 var states : Dictionary = {}
@@ -12,13 +11,16 @@ func _ready():
 		if child is State:
 			states[child.name.to_lower()] = child
 			child.Transitioned.connect(on_child_transition)
-			
 			child.player = owner
 	
 	if initial_state:
-		initial_state.Enter()
-		current_state = initial_state
-		
+		call_deferred("start")
+
+
+func start():
+	initial_state.Enter()
+	current_state = initial_state
+
 func _process(delta):
 	if current_state:
 		current_state.Update(delta)

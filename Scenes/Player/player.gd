@@ -13,14 +13,21 @@ class_name Player
 @onready var crouch_shape = $CrouchCollision
 @onready var jump_shape = $JumpCollision
 
-@onready var locomotion : AnimationNodeStateMachinePlayback = animationtree.get("parameters/locomotion/playback")
-@onready var crouch : AnimationNodeStateMachinePlayback = animationtree.get("parameters/locomotion/crouch/playback")
-@onready var slide : AnimationNodeStateMachinePlayback = animationtree.get("parameters/locomotion/slide/playback")
-@onready var sprint : AnimationNodeStateMachinePlayback = animationtree.get("parameters/locomotion/sprint/playback")
-@onready var falling : AnimationNodeStateMachinePlayback = animationtree.get("parameters/falling_state/playback")
+#@onready var locomotion : AnimationNodeStateMachinePlayback = animationtree.get("parameters/locomotion/playback")
+#@onready var crouch : AnimationNodeStateMachinePlayback = animationtree.get("parameters/locomotion/crouch/playback")
+#@onready var slide : AnimationNodeStateMachinePlayback = animationtree.get("parameters/locomotion/slide/playback")
+#@onready var sprint : AnimationNodeStateMachinePlayback = animationtree.get("parameters/locomotion/sprint/playback")
+#@onready var falling : AnimationNodeStateMachinePlayback = animationtree.get("parameters/falling_state/playback")
+
+var locomotion : AnimationNodeStateMachinePlayback
+var crouch : AnimationNodeStateMachinePlayback
+var slide : AnimationNodeStateMachinePlayback
+var sprint : AnimationNodeStateMachinePlayback
+var falling : AnimationNodeStateMachinePlayback
+
 var midair_blend2 = "parameters/midairs/blend_amount"
 var midair_oneshot = "parameters/midair/request"
-var crouch_blend = "parameters/locomotion/crouch/crouching/blend_position"
+var crouch_blend = "parameters/locomotion/Crouching/Crouch/blend_position"
 var walk_blend = "parameters/locomotion/walk/blend_position"
 
 @export var ray : RayCast3D
@@ -30,7 +37,8 @@ var walk_blend = "parameters/locomotion/walk/blend_position"
 enum collision_type {STANDING, CROUCHING, JUMPING}
 
 const SPEED = 20.0
-const CROUCH_SPEED = 10.0
+const CROUCH_SPEED = 20.0
+const SLIDE_SPEED = 30.0
 const RUNSPEED = 30.0
 const JUMP_VELOCITY = 13
 
@@ -38,12 +46,20 @@ var current_input : Vector2
 var current_velocity : Vector2
 
 func _ready() -> void:
+	# init animation playback refs first
+	locomotion = animationtree.get("parameters/locomotion/playback")
+	crouch = animationtree.get("parameters/locomotion/Crouching/playback")
+	slide = animationtree.get("parameters/locomotion/slide/playback")
+	sprint = animationtree.get("parameters/locomotion/sprint/playback")
+	falling = animationtree.get("parameters/falling_state/playback")
+	
 	$FallTimer.timeout.connect(fall_toggle)
 	pass
 
 # per-frame, non phyisics
 func _process(delta: float) -> void:
-	state_machine.current_state.Update(delta)
+	if state_machine.current_state:
+		state_machine.current_state.Update(delta)
 	
 	
 	if not is_on_floor() and $FallTimer.paused and not state_machine.current_state.name == "Jump":
@@ -59,7 +75,8 @@ func _physics_process(delta: float) -> void:
 	
 	current_input = Input.get_vector("move_left", "move_right", "move_forward", "move_back")
 	
-	state_machine.current_state.Physics_Update(delta)
+	if state_machine.current_state:
+		state_machine.current_state.Physics_Update(delta)
 	move_and_slide()
 	
 	

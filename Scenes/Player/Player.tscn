@@ -3,21 +3,15 @@
 [ext_resource type="Script" uid="uid://cegq0ewgb31pw" path="res://Scenes/Player/player.gd" id="1_fk5o5"]
 [ext_resource type="PackedScene" uid="uid://bvr7bm7ye517f" path="res://assets/Animations/Mannequins/UAL2.glb" id="1_t26db"]
 [ext_resource type="Script" uid="uid://bs7mjdh2ospgt" path="res://Scripts/Player/StateMachine.gd" id="2_fk5o5"]
-[ext_resource type="Script" uid="uid://ufbk65qaew0" path="res://States/Idle.gd" id="3_825xp"]
 [ext_resource type="AnimationLibrary" uid="uid://7mxfk8us0e3a" path="res://assets/Animations/Animation-Lib-1.res" id="3_ji083"]
 [ext_resource type="Script" uid="uid://c1fc016hm4m1n" path="res://Scripts/test.gd" id="4_0kmp4"]
 [ext_resource type="AnimationNodeStateMachine" uid="uid://b1xf1k1cmgdrr" path="res://crouch.tres" id="4_0objx"]
-[ext_resource type="Script" uid="uid://cdf7llitbc4k" path="res://Scripts/Player/Walk.gd" id="4_ji083"]
 [ext_resource type="Script" uid="uid://ddv88mxhc5ckf" path="res://Scenes/Player/jump.gd" id="5_0kmp4"]
 [ext_resource type="Script" uid="uid://5eafo1g3n7rf" path="res://Scenes/Player/head.gd" id="5_i5acl"]
 [ext_resource type="AnimationNodeStateMachine" uid="uid://chq53ui5g00ho" path="res://slide.tres" id="5_w71ue"]
 [ext_resource type="AnimationNodeStateMachine" uid="uid://87q75yd7roc4" path="res://sprinting.tres" id="6_1e6p3"]
 [ext_resource type="Script" uid="uid://cc81tv6ioctbt" path="res://States/State.gd" id="6_i5acl"]
-[ext_resource type="Script" uid="uid://2k68ndecp5bd" path="res://Scenes/Player/run.gd" id="7_epg6k"]
 [ext_resource type="AnimationNodeBlendSpace2D" uid="uid://dahdaswo3jn80" path="res://walking.tres" id="7_yb677"]
-[ext_resource type="Script" uid="uid://bwknuu8bg5yhj" path="res://Scenes/Player/dance.gd" id="11_0kmp4"]
-[ext_resource type="Script" uid="uid://dh6juvphutq5o" path="res://Scenes/Player/slide.gd" id="13_epg6k"]
-[ext_resource type="Script" uid="uid://chrq4amctxxa0" path="res://Scenes/Player/crouch.gd" id="14_0u84n"]
 [ext_resource type="Script" uid="uid://b54pkl6hb0nvd" path="res://Scenes/Player/Standing.gd" id="19_1e6p3"]
 [ext_resource type="Script" uid="uid://cp4oil43tqo8" path="res://Scenes/Player/Crouching.gd" id="20_yb677"]
 
@@ -923,13 +917,34 @@ states/d_Jump_Land/position = Vector2(689, 12)
 states/d_Jump_Start/node = SubResource("AnimationNodeAnimation_yb677")
 states/d_Jump_Start/position = Vector2(392, 12)
 transitions = ["Start", "d_Jump", SubResource("AnimationNodeStateMachineTransition_wwmao"), "d_Jump", "End", SubResource("AnimationNodeStateMachineTransition_g7gci"), "d_Jump", "d_Jump_Land", SubResource("AnimationNodeStateMachineTransition_r6t50"), "d_Jump_Land", "End", SubResource("AnimationNodeStateMachineTransition_6rswy"), "Start", "d_Jump_Start", SubResource("AnimationNodeStateMachineTransition_jbjyn"), "d_Jump_Start", "d_Jump", SubResource("AnimationNodeStateMachineTransition_lw74r")]
-graph_offset = Vector2(-151, -133)
+graph_offset = Vector2(-201, -131)
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_r6t50"]
 animation = &"d/Crouch_Idle"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_6rswy"]
 animation = &"d/Crouch_Fwd"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_1nex2"]
+animation = &"Slide"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_tgfvv"]
+animation = &"Slide"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_yi34y"]
+animation = &"Slide"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_daopn"]
+animation = &"Slide"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_tkwhe"]
+animation = &"Slide"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_b7nrf"]
+animation = &"Slide"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ykffh"]
+animation = &"Slide"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_jbjyn"]
 animation = &"d/Crouch_Right"
@@ -976,6 +991,20 @@ blend_point_8/node = SubResource("AnimationNodeAnimation_fcbn2")
 blend_point_8/pos = Vector2(-1, 1)
 blend_point_9/node = SubResource("AnimationNodeAnimation_hjq2i")
 blend_point_9/pos = Vector2(0, 2)
+blend_point_10/node = SubResource("AnimationNodeAnimation_1nex2")
+blend_point_10/pos = Vector2(-2, 0)
+blend_point_11/node = SubResource("AnimationNodeAnimation_tgfvv")
+blend_point_11/pos = Vector2(-2, 2)
+blend_point_12/node = SubResource("AnimationNodeAnimation_yi34y")
+blend_point_12/pos = Vector2(2, 2)
+blend_point_13/node = SubResource("AnimationNodeAnimation_daopn")
+blend_point_13/pos = Vector2(2, 0)
+blend_point_14/node = SubResource("AnimationNodeAnimation_tkwhe")
+blend_point_14/pos = Vector2(2, -2)
+blend_point_15/node = SubResource("AnimationNodeAnimation_b7nrf")
+blend_point_15/pos = Vector2(0, -2)
+blend_point_16/node = SubResource("AnimationNodeAnimation_ykffh")
+blend_point_16/pos = Vector2(-2, -2)
 min_space = Vector2(-2, -2)
 max_space = Vector2(2, 2)
 sync = true
@@ -991,6 +1020,11 @@ animation = &"d/Crawl_Exit"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_w4oha"]
 animation = &"d/Crouch_Enter"
+use_custom_timeline = true
+timeline_length = 0.3
+stretch_time_scale = true
+start_offset = 0.0
+loop_mode = 0
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_4ribq"]
 
@@ -999,18 +1033,26 @@ animation = &"d/Crouch_Enter"
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_1nex2"]
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_tgfvv"]
+switch_mode = 2
+advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_yi34y"]
+switch_mode = 2
+advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_daopn"]
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_tkwhe"]
+switch_mode = 2
+advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_b7nrf"]
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ykffh"]
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_5xs4v"]
+switch_mode = 2
+advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_4emfg"]
 states/Crouch/node = SubResource("AnimationNodeBlendSpace2D_ui31c")
@@ -1024,13 +1066,34 @@ states/d_Crawl_Exit/position = Vector2(730, 22)
 states/d_Crouch_Enter/node = SubResource("AnimationNodeAnimation_w4oha")
 states/d_Crouch_Enter/position = Vector2(370, 22)
 transitions = ["Start", "d_Crouch_Enter", SubResource("AnimationNodeStateMachineTransition_4ribq"), "Start", "Crouch", SubResource("AnimationNodeStateMachineTransition_jh1yi"), "Crouch", "d_Crawl_Exit", SubResource("AnimationNodeStateMachineTransition_1nex2"), "d_Crawl_Exit", "End", SubResource("AnimationNodeStateMachineTransition_tgfvv"), "d_Crouch_Enter", "Crouch", SubResource("AnimationNodeStateMachineTransition_yi34y"), "Crouch", "End", SubResource("AnimationNodeStateMachineTransition_daopn"), "Slide_Exit", "End", SubResource("AnimationNodeStateMachineTransition_tkwhe"), "Crouch", "Slide_Exit", SubResource("AnimationNodeStateMachineTransition_b7nrf"), "Start", "Slide_Start", SubResource("AnimationNodeStateMachineTransition_ykffh"), "Slide_Start", "Crouch", SubResource("AnimationNodeStateMachineTransition_5xs4v")]
-graph_offset = Vector2(-151, -96)
+graph_offset = Vector2(-220, -136)
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_8cj01"]
 animation = &"d/Idle"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_i2g7t"]
 animation = &"d/Jog_Fwd"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_0u84n"]
+animation = &"d/Sprint"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_esmjy"]
+animation = &"d/Sprint"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_6tu5v"]
+animation = &"d/Sprint"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_spxdj"]
+animation = &"d/Sprint"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ui31c"]
+animation = &"d/Sprint"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_4ribq"]
+animation = &"d/Sprint"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_jh1yi"]
+animation = &"d/Sprint"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_io2mu"]
 animation = &"d/Jog_Fwd_R"
@@ -1082,6 +1145,20 @@ blend_point_8/node = SubResource("AnimationNodeAnimation_wid83")
 blend_point_8/pos = Vector2(1, 0)
 blend_point_9/node = SubResource("AnimationNodeAnimation_g7gci")
 blend_point_9/pos = Vector2(0, 2)
+blend_point_10/node = SubResource("AnimationNodeAnimation_0u84n")
+blend_point_10/pos = Vector2(-2, 2)
+blend_point_11/node = SubResource("AnimationNodeAnimation_esmjy")
+blend_point_11/pos = Vector2(-2, 0)
+blend_point_12/node = SubResource("AnimationNodeAnimation_6tu5v")
+blend_point_12/pos = Vector2(-2, -2)
+blend_point_13/node = SubResource("AnimationNodeAnimation_spxdj")
+blend_point_13/pos = Vector2(0, -2)
+blend_point_14/node = SubResource("AnimationNodeAnimation_ui31c")
+blend_point_14/pos = Vector2(2, -2)
+blend_point_15/node = SubResource("AnimationNodeAnimation_4ribq")
+blend_point_15/pos = Vector2(2, 0)
+blend_point_16/node = SubResource("AnimationNodeAnimation_jh1yi")
+blend_point_16/pos = Vector2(2, 2)
 min_space = Vector2(-2, -2)
 max_space = Vector2(2, 2)
 sync = true
@@ -1118,6 +1195,7 @@ switch_mode = 2
 advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_t4n31"]
+xfade_time = 0.2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_mhihw"]
 
@@ -1137,7 +1215,7 @@ states/sprint/position = Vector2(1431.1887, 99.9552)
 states/walk/node = ExtResource("7_yb677")
 states/walk/position = Vector2(1077, 100.32)
 transitions = ["walk", "sprint", SubResource("AnimationNodeStateMachineTransition_i2g7t"), "walk", "crouch", SubResource("AnimationNodeStateMachineTransition_io2mu"), "crouch", "walk", SubResource("AnimationNodeStateMachineTransition_e5iqy"), "sprint", "slide", SubResource("AnimationNodeStateMachineTransition_8t5qx"), "slide", "sprint", SubResource("AnimationNodeStateMachineTransition_8rd5p"), "sprint", "walk", SubResource("AnimationNodeStateMachineTransition_7xdrn"), "slide", "walk", SubResource("AnimationNodeStateMachineTransition_wid83"), "walk", "d_Dance", SubResource("AnimationNodeStateMachineTransition_w71ue"), "d_Dance", "walk", SubResource("AnimationNodeStateMachineTransition_0objx"), "Start", "Standing", SubResource("AnimationNodeStateMachineTransition_ntbx5"), "Standing", "Crouching", SubResource("AnimationNodeStateMachineTransition_t4n31"), "Crouching", "Standing", SubResource("AnimationNodeStateMachineTransition_mhihw")]
-graph_offset = Vector2(-167.1784, -102)
+graph_offset = Vector2(-43.178406, -93)
 
 [sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_r6t50"]
 
@@ -1149,7 +1227,7 @@ fadeout_time = 0.3
 sync = true
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_1e6p3"]
-graph_offset = Vector2(202.54492, 230.69629)
+graph_offset = Vector2(178.63635, 395.2727)
 nodes/output/position = Vector2(1700, 500)
 nodes/locomotion_scale/node = SubResource("AnimationNodeTimeScale_r6t50")
 nodes/locomotion_scale/position = Vector2(1060, 520)
@@ -1162,7 +1240,7 @@ nodes/locomotion/position = Vector2(720, 440)
 nodes/falling_scale/node = SubResource("AnimationNodeTimeScale_0objx")
 nodes/falling_scale/position = Vector2(1060, 860)
 nodes/midairs/node = SubResource("AnimationNodeBlend2_0objx")
-nodes/midairs/position = Vector2(1680, 720)
+nodes/midairs/position = Vector2(2120, 720)
 node_connections = [&"output", 0, &"midair", &"locomotion_scale", 0, &"locomotion", &"midair", 0, &"locomotion_scale", &"midair", 1, &"falling_scale", &"falling_scale", 0, &"falling_state"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_io2mu"]
@@ -1193,7 +1271,66 @@ state_machine = NodePath("StateMachine")
 [node name="UAL2" parent="." unique_id=1879318449 instance=ExtResource("1_t26db")]
 transform = Transform3D(2.005, 0, 0, 0, 2.005, 0, 0, 0, 2.005, 0, 0, 0)
 
-[node name="AnimationPlayer" parent="UAL2" index="1" unique_id=463239085]
+[node name="GeneralSkeleton" parent="UAL2/Armature" parent_id_path=PackedInt32Array(1879318449, 22080673) index="0" unique_id=1778975050]
+bones/1/position = Vector3(0.004610973, 0.8745994, -0.08625918)
+bones/1/rotation = Quaternion(-0.04648088, -0.11550905, -0.0054035583, 0.9922036)
+bones/3/rotation = Quaternion(0.08477341, -2.431503e-05, 0.00027136473, 0.9964003)
+bones/4/rotation = Quaternion(0.0847829, 0.00043949648, 0.00024263207, 0.99639934)
+bones/5/rotation = Quaternion(-0.084780864, -0.00033875715, -0.00023872482, 0.9963996)
+bones/6/rotation = Quaternion(0.065242305, 0.09525155, 0.010629682, 0.9932561)
+bones/7/rotation = Quaternion(0.49211454, 0.52500296, 0.5277651, -0.45128623)
+bones/8/rotation = Quaternion(-0.047753252, 0.8200292, -0.57024264, 0.009758039)
+bones/9/rotation = Quaternion(0.1738179, -0.663804, 0.17285234, 0.706593)
+bones/10/rotation = Quaternion(0.09920514, 0.70688266, 0.062950976, 0.6975044)
+bones/11/rotation = Quaternion(0.6295969, -4.1018286e-08, -4.619178e-06, 0.77692205)
+bones/12/rotation = Quaternion(0.62334186, 3.0294846e-08, -4.262063e-06, 0.7819494)
+bones/13/rotation = Quaternion(0.62334144, -2.2261237e-07, -4.469968e-06, 0.78194976)
+bones/15/rotation = Quaternion(0.6288944, -0.029734906, -4.4698395e-06, 0.7769219)
+bones/16/rotation = Quaternion(0.6227327, -0.02755458, -4.411131e-06, 0.78194934)
+bones/17/rotation = Quaternion(0.6226684, -0.028961532, -4.47102e-06, 0.78194976)
+bones/19/rotation = Quaternion(0.6630008, -0.044529784, 0.07369418, 0.7436506)
+bones/20/rotation = Quaternion(0.6203661, -0.06229401, 0.015573084, 0.7816795)
+bones/21/rotation = Quaternion(0.6219216, -0.04205184, -4.470434e-06, 0.7819497)
+bones/23/rotation = Quaternion(0.6291978, -0.02241407, -4.202184e-06, 0.776922)
+bones/24/rotation = Quaternion(0.6229472, -0.022176376, -4.3212617e-06, 0.7819494)
+bones/25/rotation = Quaternion(0.6228982, -0.02350548, -4.5006223e-06, 0.7819498)
+bones/27/rotation = Quaternion(-0.123819195, 0.7195233, 0.20183544, 0.65285337)
+bones/28/rotation = Quaternion(0.18180692, 0.11012423, 0.060063303, 0.9753006)
+bones/29/rotation = Quaternion(0.5994299, 0.27396563, 0.19463213, 0.72646064)
+bones/30/scale = Vector3(1.0001454, 1.0004877, 1.0005833)
+bones/31/rotation = Quaternion(0.5441919, -0.4734978, -0.47561795, -0.5034308)
+bones/32/rotation = Quaternion(0.09134536, 0.8251475, -0.5574004, -0.009613341)
+bones/33/rotation = Quaternion(0.29272345, 0.5417707, -0.20471853, 0.7608468)
+bones/34/rotation = Quaternion(0.12024976, -0.69903094, -0.056890074, 0.702609)
+bones/35/rotation = Quaternion(0.6295971, 3.7273203e-08, 4.1719554e-06, 0.7769218)
+bones/36/rotation = Quaternion(0.6233415, 1.8308693e-07, 4.470529e-06, 0.7819498)
+bones/37/rotation = Quaternion(0.6233416, 1.0063665e-07, 4.232142e-06, 0.7819497)
+bones/38/rotation = Quaternion(4.687451e-09, 1, 4.2983686e-08, -5.7639035e-08)
+bones/39/rotation = Quaternion(0.62889475, 0.0297348, 4.3508703e-06, 0.77692175)
+bones/40/rotation = Quaternion(0.62273216, 0.027554482, 4.5001307e-06, 0.78194976)
+bones/41/rotation = Quaternion(0.62266874, 0.028961398, 4.321681e-06, 0.78194946)
+bones/43/rotation = Quaternion(0.6630007, 0.044529952, -0.07369393, 0.74365073)
+bones/44/rotation = Quaternion(0.62036633, 0.062293626, -0.015572906, 0.78167933)
+bones/45/rotation = Quaternion(0.6219219, 0.04205143, 4.470314e-06, 0.78194946)
+bones/46/rotation = Quaternion(-0.03375008, 0.99943036, 4.921076e-08, -5.633216e-08)
+bones/47/rotation = Quaternion(0.6291981, 0.02241379, 4.1129388e-06, 0.77692175)
+bones/48/rotation = Quaternion(0.62294656, 0.022176202, 4.469965e-06, 0.7819501)
+bones/49/rotation = Quaternion(0.6228987, 0.023505261, 4.1727512e-06, 0.7819494)
+bones/50/rotation = Quaternion(-0.018857837, 0.9998222, -1.5124995e-08, -2.3688271e-07)
+bones/51/rotation = Quaternion(-0.12381924, -0.7195233, -0.20183559, 0.65285325)
+bones/52/rotation = Quaternion(0.18180701, -0.11012422, -0.0600633, 0.9753006)
+bones/53/rotation = Quaternion(0.5994302, -0.27396527, -0.19463223, 0.7264605)
+bones/54/scale = Vector3(1.0001454, 1.0004876, 1.0005835)
+bones/55/rotation = Quaternion(-0.00079778465, 0.12785666, 0.98529375, -0.113350675)
+bones/56/rotation = Quaternion(0.017809754, 0.9800674, -0.16342923, 0.11154274)
+bones/57/rotation = Quaternion(-0.09528004, 0.72448295, -0.6826495, 0.005999014)
+bones/58/rotation = Quaternion(4.6605003e-08, 1, 5.969182e-08, 2.7760949e-08)
+bones/60/rotation = Quaternion(0.00086802663, -0.10358402, 0.9870583, 0.12241572)
+bones/61/rotation = Quaternion(-0.03625344, 0.927724, -0.10050013, -0.35765016)
+bones/62/rotation = Quaternion(0.1716943, 0.6390534, -0.7497537, -0.0011259608)
+bones/63/rotation = Quaternion(-6.695359e-08, 1, 0.00013265306, 2.2188902e-09)
+
+[node name="AnimationPlayer" parent="UAL2" index="1" unique_id=1248617935]
 libraries/Locomotion = SubResource("AnimationLibrary_0kmp4")
 libraries/d = ExtResource("3_ji083")
 
@@ -1204,8 +1341,8 @@ parameters/locomotion_scale/scale = 1.0
 parameters/midair/active = false
 parameters/midair/internal_active = false
 parameters/midair/request = 0
-parameters/locomotion/Crouching/Crouch/blend_position = Vector2(0, 0.009756088)
-parameters/locomotion/Standing/blend_position = Vector2(-0.5031712, 0.51707315)
+parameters/locomotion/Crouching/Crouch/blend_position = Vector2(-0.5659597, -0.10576916)
+parameters/locomotion/Standing/blend_position = Vector2(0.0010347366, 0)
 parameters/locomotion/crouch/crouching/blend_position = Vector2(0, 0)
 parameters/locomotion/walk/blend_position = Vector2(-0.11750001, 0.6094117)
 parameters/falling_scale/scale = 1.0
@@ -1235,32 +1372,13 @@ shape = SubResource("BoxShape3D_esmjy")
 
 [node name="StateMachine" type="Node" parent="." unique_id=318422204 node_paths=PackedStringArray("initial_state")]
 script = ExtResource("2_fk5o5")
-initial_state = NodePath("Idle")
-
-[node name="Idle" type="Node" parent="StateMachine" unique_id=181735562]
-script = ExtResource("3_825xp")
-
-[node name="Walk" type="Node" parent="StateMachine" unique_id=187660982]
-script = ExtResource("4_ji083")
+initial_state = NodePath("Standing")
 
 [node name="Jump" type="Node" parent="StateMachine" unique_id=1022849116]
 script = ExtResource("5_0kmp4")
 
 [node name="State" type="Node" parent="StateMachine" unique_id=1582403766]
 script = ExtResource("6_i5acl")
-
-[node name="Run" type="Node" parent="StateMachine" unique_id=35225159]
-script = ExtResource("7_epg6k")
-
-[node name="Dance" type="Node" parent="StateMachine" unique_id=1618699442]
-script = ExtResource("11_0kmp4")
-
-[node name="Slide" type="Node" parent="StateMachine" unique_id=645539616]
-script = ExtResource("13_epg6k")
-
-[node name="Crouch" type="Node" parent="StateMachine" unique_id=1350477844]
-script = ExtResource("14_0u84n")
-metadata/_custom_type_script = "uid://cc81tv6ioctbt"
 
 [node name="Standing" type="Node" parent="StateMachine" unique_id=2128110052]
 script = ExtResource("19_1e6p3")

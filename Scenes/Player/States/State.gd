@@ -1,5 +1,5 @@
 extends Node
-class_name State
+
 
 signal Transitioned
 @onready var player : Player
