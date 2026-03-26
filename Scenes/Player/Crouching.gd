@@ -38,13 +38,13 @@ func set_slide_rotation():
 	var horizontal_dir = horizontal.normalized()
 	var world_angle = atan2(horizontal_dir.x, horizontal_dir.y)
 	var local_angle = world_angle - player.global_rotation.y
-	player.model.rotation.y = local_angle
+	player.mesh.rotation.y = local_angle
 
 func Exit():
 	if was_sliding:
 		player.crouch.travel("Slide_Exit")
 		player.head.lock_body(true)
-		player.model.rotation = Vector3.ZERO
+		player.mesh.rotation = Vector3.ZERO
 	else:
 		player.crouch.travel("d_Crawl_Exit")
 
@@ -74,7 +74,7 @@ func Physics_Update(_delta:float):
 			target_blend = current_dir * 1.0
 			was_sliding = false
 			player.head.lock_body(true)
-			player.model.rotation = Vector3.ZERO
+			player.mesh.rotation = Vector3.ZERO
 			
 	else:
 		if direction != Vector3.ZERO:

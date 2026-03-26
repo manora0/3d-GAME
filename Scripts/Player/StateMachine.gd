@@ -1,4 +1,4 @@
-extends Node
+extends State
 class_name StateMachine
 
 @export var initial_state : State
@@ -35,6 +35,7 @@ func on_child_transition(state, new_state_name):
 		
 	var new_state = states.get(new_state_name.to_lower())
 	if !new_state:
+		Transitioned.emit(self, )
 		return
 	
 	if current_state:

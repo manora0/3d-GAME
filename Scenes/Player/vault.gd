@@ -28,7 +28,7 @@ func Exit():
 func Physics_Update(_delta: float):
 	var root_motion = player.animationtree.get_root_motion_position()
 	var motion = player.global_transform.basis * root_motion
-	player.velocity = motion * 7 / _delta
+	player.velocity = motion * 2 / _delta
 	
 	print("root_motion this frame: ", root_motion)
 	print("magnitude: ", root_motion.length())

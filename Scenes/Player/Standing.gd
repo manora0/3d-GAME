@@ -29,7 +29,7 @@ func Physics_Update(_delta: float):
 	if is_running and direction != Vector3.ZERO:
 		var dir = player.velocity
 		dir.y = 0
-		player.model.look_at(player.transform.origin - dir, Vector3.UP)
+		player.mesh.look_at(player.transform.origin - dir, Vector3.UP)
 
 func Update(_delta: float):
 	blend_position = blend_position.move_toward(target_blend, transition_speed * _delta)
@@ -42,7 +42,7 @@ func Update(_delta: float):
 		pass
 	elif not is_running and was_running:
 		player.head.lock_body(true)
-		player.model.rotation = Vector3.ZERO
+		player.mesh.rotation = Vector3.ZERO
 
 	was_running = is_running
 	check_transition()
