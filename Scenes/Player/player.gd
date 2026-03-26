@@ -4,6 +4,9 @@ class_name Player
 @export var animationtree : AnimationTree
 @export var state_machine : StateMachine
 
+@export var vault_cast_forward: RayCast3D  # points forward at chest height
+@export var vault_cast_down: RayCast3D 
+
 @onready var anim: AnimationPlayer = $UAL2/AnimationPlayer
 @onready var model = $UAL2
 @onready var label = $head/StateLabel3D
@@ -13,11 +16,8 @@ class_name Player
 @onready var crouch_shape = $CrouchCollision
 @onready var jump_shape = $JumpCollision
 
-#@onready var locomotion : AnimationNodeStateMachinePlayback = animationtree.get("parameters/locomotion/playback")
-#@onready var crouch : AnimationNodeStateMachinePlayback = animationtree.get("parameters/locomotion/crouch/playback")
-#@onready var slide : AnimationNodeStateMachinePlayback = animationtree.get("parameters/locomotion/slide/playback")
-#@onready var sprint : AnimationNodeStateMachinePlayback = animationtree.get("parameters/locomotion/sprint/playback")
-#@onready var falling : AnimationNodeStateMachinePlayback = animationtree.get("parameters/falling_state/playback")
+@onready var ray_left := $Ray_Left
+@onready var ray_right := $Ray_Right
 
 var locomotion : AnimationNodeStateMachinePlayback
 var crouch : AnimationNodeStateMachinePlayback
@@ -36,11 +36,13 @@ var walk_blend = "parameters/locomotion/walk/blend_position"
 
 enum collision_type {STANDING, CROUCHING, JUMPING}
 
-const SPEED = 20.0
-const CROUCH_SPEED = 20.0
-const SLIDE_SPEED = 30.0
-const RUNSPEED = 30.0
-const JUMP_VELOCITY = 13
+const SPEED = 15.0
+const CROUCH_SPEED = 15.0
+const SLIDE_SPEED = 25.0
+const RUNSPEED = 25.0
+const JUMP_VELOCITY = 20
+
+var gravity_scale : float = 1.0
 
 var current_input : Vector2
 var current_velocity : Vector2
@@ -53,7 +55,7 @@ func _ready() -> void:
 	sprint = animationtree.get("parameters/locomotion/sprint/playback")
 	falling = animationtree.get("parameters/falling_state/playback")
 	
-	$FallTimer.timeout.connect(fall_toggle)
+	#$FallTimer.timeout.connect(fall_toggle)
 	pass
 
 # per-frame, non phyisics
@@ -67,11 +69,20 @@ func _process(delta: float) -> void:
 		$FallTimer.start()
 	elif is_on_floor() and not $FallTimer.paused:
 		$FallTimer.set_paused(true)
+		
+	if Input.is_action_pressed("aim"):
+		animationtree["parameters/cast 2/blend_amount"] = 1.0
+	else:
+		animationtree["parameters/cast 2/blend_amount"] = 0
+		
+	if Input.is_key_pressed(KEY_R):
+		print("true")
+		anim.play("d/Dance")
 	
 
 func _physics_process(delta: float) -> void:
 	if not is_on_floor():
-		velocity += get_gravity() * delta * 2
+		velocity += get_gravity() * delta * 4  * gravity_scale
 	
 	current_input = Input.get_vector("move_left", "move_right", "move_forward", "move_back")
 	

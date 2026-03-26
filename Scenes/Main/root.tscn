@@ -50,10 +50,20 @@ use_collision = true
 transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 2.1123276, 3.9329624)
 use_collision = true
 
+[node name="CSGBox3D2" type="CSGBox3D" parent="map/CSGBox3D2" unique_id=2142440697]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.51953125, 0.17549866, 4.474222)
+use_collision = true
+size = Vector3(2.0390625, 1.3744507, 2.0825195)
+
 [node name="CSGBox3D3" type="CSGBox3D" parent="map" unique_id=555912504]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28.376137, 8.69102, -4.0896797)
 use_collision = true
 size = Vector3(1, 15.825684, 45.347046)
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="map/CSGBox3D3" unique_id=6454816]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 65.056946, 7.355754, 73.926346)
+use_collision = true
+size = Vector3(1, 31.155151, 201.37909)
 
 [node name="CSGBox3D4" type="CSGBox3D" parent="map" unique_id=1563075783]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -19.690186, 1.0804236, 0)
