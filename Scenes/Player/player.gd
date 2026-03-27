@@ -34,6 +34,7 @@ var walk_blend = "parameters/locomotion/walk/blend_position"
 @onready var ray_right := $Ray_Right
 
 @onready var label = $head/StateLabel3D
+@onready var ray_on_ground := $RayOnGroundCheck
 
 # collision shapes
 enum collision_type {STANDING, CROUCHING, JUMPING}
@@ -41,6 +42,11 @@ enum collision_type {STANDING, CROUCHING, JUMPING}
 @onready var standing_shape = $DefaultCollision
 @onready var crouch_shape = $CrouchCollision
 @onready var jump_shape = $JumpCollision
+
+@onready var camera_parent = get_parent().get_node("Camera")
+@onready var camera_target = get_parent().get_node("Camera").get_node("CameraTarget")
+var camera_T  = float()
+var camera_offset : Vector3 = Vector3(0,2.5,0)
 
 # input value
 var input_dir := Vector2()
@@ -80,7 +86,7 @@ var disable_root_motion_y = bool()
 
 # animationtree transition condition
 var canmove : bool
-var anim_isgrounded = bool(true)
+var anim_isgrounded := true
 var anim_landing_idle =bool()
 var start_landing_idle =bool()
 
@@ -110,10 +116,10 @@ var strafe_angle = float()
 var new_diff_angle = 0.0
 var new_diff_angle_acceleration = 0.1
 
-const SPEED = 15.0
-const CROUCH_SPEED = 15.0
-const SLIDE_SPEED = 25.0
-const RUNSPEED = 25.0
+const SPEED = 10
+const CROUCH_SPEED = 7.0
+const SLIDE_SPEED = 13.0
+const RUNSPEED = 15.0
 const JUMP_VELOCITY = 20
 
 var gravity_scale : float = 1.0
@@ -122,7 +128,11 @@ var current_input : Vector2
 var current_velocity : Vector2
 
 func _input(event):
-	
+	#if Input.is_action_just_pressed("sprint") and !(climb or vault or mantle or stop_move):
+		#can_run = !can_run
+#
+	#if Input.is_action_just_pressed("strafe"):
+		#strafe = !strafe
 	pass
 
 func _ready() -> void:
@@ -138,15 +148,10 @@ func _ready() -> void:
 
 # per-frame, non phyisics
 func _process(delta: float) -> void:
-	
-	horizontal = Input.get_axis("left", "right")
-	vertical = Input.get_axis("move_back", "move_forward")
-	
-	
-	
 	if state_machine.current_state:
 		state_machine.current_state.Update(delta)
 	
+	animation_parameter()
 	
 	if not is_on_floor() and $FallTimer.paused and not state_machine.current_state.name == "Jump":
 		$FallTimer.set_paused(false)
@@ -160,21 +165,81 @@ func _process(delta: float) -> void:
 		animationtree["parameters/cast 2/blend_amount"] = 0
 		
 	if Input.is_key_pressed(KEY_R):
-		print("true")
 		anim.play("d/Dance")
-	
+		
+
+func rotate_player(delta: float):
+	if direction != Vector3.ZERO:
+		var target_angle = Vector3.BACK.signed_angle_to(direction, Vector3.UP)
+		rotation.y = lerp_angle(rotation.y, target_angle, TURN_SPEED * delta)
+
+
+func set_camera_follow(delta: float):
+	var cam_timer = clamp(delta * 300 / 20, 0,1)
+	camera_parent.global_transform.origin = camera_parent.global_transform.origin.lerp(self.global_transform.origin + camera_offset, cam_timer)
+	pass
 
 func _physics_process(delta: float) -> void:
+	camera_T = camera_target.global_transform.basis.get_euler().y
+	horizontal = Input.get_axis("move_left", "move_right")
+	vertical = Input.get_axis("move_forward", "move_back")
+	inputdir = Vector3(horizontal, 0, vertical).normalized()
+	
 	if not is_on_floor():
 		velocity += get_gravity() * delta * 4  * gravity_scale
 	
-	current_input = Input.get_vector("move_left", "move_right", "move_forward", "move_back")
+	#lean_toward_acceleration(delta)
+	rotate_player(delta)
+	onground_check()
+	set_camera_follow(delta)
+	
+	rotation.y = lerp_angle(rotation.y, camera_T, delta * TURN_SPEED)
 	
 	if state_machine.current_state:
 		state_machine.current_state.Physics_Update(delta)
+	
+	
 	move_and_slide()
 	
+func lean_toward_acceleration(delta: float):
+	if anim_isgrounded:
+		if direction != Vector3.ZERO:
+			lean_velocity = lean_velocity.lerp(direction * move_speed, 3 * delta)
+		else:
+			lean_velocity = lean_velocity.lerp(Vector3.ZERO, 3 * delta)
 	
+	lean_acceleration = lean_velocity - last_lean_velocity
+	lean = lean_acceleration.cross(Vector3.UP) * 1.1
+	player.rotation = lerp(player.rotation, -lean , 4 * delta)
+	last_lean_velocity = lean_velocity
+
+func onground_check():
+	anim_isgrounded = ray_on_ground.is_colliding()
+
+func animation_parameter():
+	animationtree.set("parameters/StateMachine/conditions/idle", !canmove)
+	animationtree.set("parameters/StateMachine/conditions/startmove", canmove)
+
+	animationtree.set("parameters/StateMachine/conditions/isgrounded",anim_isgrounded)
+	animationtree.set("parameters/StateMachine/conditions/isnotgrounded", !anim_isgrounded)
+
+	animationtree.set("parameters/conditions/landing_idle", anim_landing_idle)
+	animationtree.set("parameters/conditions/landing_move", !anim_landing_idle)
+
+	animationtree.set("parameters/conditions/isgrounded_idle", start_landing_idle)
+	animationtree.set("parameters/conditions/isgrounded_move", !start_landing_idle)
+
+
+
+
+
+
+
+
+
+
+
+
 func request_collision_shape(type: int):
 	if standing_shape:
 		standing_shape.disabled = true

@@ -1,7 +1,8 @@
 [gd_scene format=3 uid="uid://wuey7o70iomn"]
 
-[ext_resource type="Texture2D" uid="uid://c8arnlq67qi7" path="res://assets/lukky-nl-third_person_controller_assets-bd10196/textures/grids/Dark/texture_05.png" id="1_pq8q7"]
+[ext_resource type="Texture2D" uid="uid://bdw2j5kejiegc" path="res://assets/lukky-nl-third_person_controller_assets-bd10196/textures/grids/Dark/texture_01.png" id="1_gq5pf"]
 [ext_resource type="PackedScene" uid="uid://dwurdfr0yke7i" path="res://Scenes/Player/Player.tscn" id="2_f4vyf"]
+[ext_resource type="Script" uid="uid://d3rvq4feedyky" path="res://Scenes/Main/camera.gd" id="3_0gnig"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_f4vyf"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -18,9 +19,9 @@ glow_enabled = true
 
 [sub_resource type="CameraAttributesPhysical" id="CameraAttributesPhysical_f4vyf"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pyidc"]
-albedo_texture = ExtResource("1_pq8q7")
-uv1_scale = Vector3(5, 5, 5)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_06ls1"]
+albedo_texture = ExtResource("1_gq5pf")
+uv1_scale = Vector3(0.1, 0.1, 0.1)
 uv1_triplanar = true
 
 [sub_resource type="PrismMesh" id="PrismMesh_f4vyf"]
@@ -42,12 +43,12 @@ shadow_enabled = true
 [node name="map" type="Node3D" parent="." unique_id=1981047146]
 
 [node name="CSGBox3D" type="CSGBox3D" parent="map" unique_id=1590652690]
-transform = Transform3D(1023.925, 0, 0, 0, 1.025, 0, 0, 0, 1023.961, 0, 0, 0)
-material_override = SubResource("StandardMaterial3D_pyidc")
+material_override = SubResource("StandardMaterial3D_06ls1")
 use_collision = true
+size = Vector3(1000, 0.1, 1000)
 
 [node name="CSGBox3D2" type="CSGBox3D" parent="map" unique_id=8652580]
-transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 2.1123276, 3.9329624)
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, -34.791527, 2.1123276, 3.9329624)
 use_collision = true
 
 [node name="CSGBox3D2" type="CSGBox3D" parent="map/CSGBox3D2" unique_id=2142440697]
@@ -56,7 +57,7 @@ use_collision = true
 size = Vector3(2.0390625, 1.3744507, 2.0825195)
 
 [node name="CSGBox3D3" type="CSGBox3D" parent="map" unique_id=555912504]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28.376137, 8.69102, -4.0896797)
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 76.75796, 8.69102, 28.501564)
 use_collision = true
 size = Vector3(1, 15.825684, 45.347046)
 
@@ -66,7 +67,7 @@ use_collision = true
 size = Vector3(1, 31.155151, 201.37909)
 
 [node name="CSGMesh3D" type="CSGMesh3D" parent="map" unique_id=241098640]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -20.134918, 13.169299, 0)
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -1.8488865, 13.169295, 61.90004)
 use_collision = true
 mesh = SubResource("PrismMesh_f4vyf")
 material = SubResource("StandardMaterial3D_gq5pf")
@@ -96,3 +97,19 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.080566, 7.8111506, -93.6943
 size = Vector3(7.053711, 4.3155518, 1)
 
 [node name="Player" parent="." unique_id=2095429027 instance=ExtResource("2_f4vyf")]
+
+[node name="Camera" type="Node3D" parent="." unique_id=410665877 node_paths=PackedStringArray("camera_target")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.184158, 4.356584)
+script = ExtResource("3_0gnig")
+camera_target = NodePath("CameraTarget")
+
+[node name="CameraTarget" type="Node3D" parent="Camera" unique_id=1431864778]
+
+[node name="SpringArm3D" type="SpringArm3D" parent="Camera/CameraTarget" unique_id=365585236]
+collision_mask = 8
+spring_length = -3.0
+
+[node name="Camera3D" type="Camera3D" parent="Camera/CameraTarget/SpringArm3D" unique_id=580917870]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0, 0)
+cull_mask = 1
+current = true
