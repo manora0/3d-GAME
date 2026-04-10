@@ -16,7 +16,7 @@ func Enter():
 		timer.timeout.connect(func(): can_transition = true)
 	timer.start(0.5)
 	
-	player.standing_shape.disabled = true
+	#player.standing_shape.disabled = true
 
 func Exit():
 	player.gravity_scale = 1.0

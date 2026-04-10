@@ -39,9 +39,9 @@ var walk_blend = "parameters/locomotion/walk/blend_position"
 # collision shapes
 enum collision_type {STANDING, CROUCHING, JUMPING}
 
-@onready var standing_shape = $DefaultCollision
-@onready var crouch_shape = $CrouchCollision
-@onready var jump_shape = $JumpCollision
+#@onready var standing_shape = $DefaultCollision
+#@onready var crouch_shape = $CrouchCollision
+#@onready var jump_shape = $JumpCollision
 
 @onready var camera_parent = get_parent().get_node("Camera")
 @onready var camera_target = get_parent().get_node("Camera").get_node("CameraTarget")
@@ -89,6 +89,7 @@ var canmove : bool
 var anim_isgrounded := true
 var anim_landing_idle =bool()
 var start_landing_idle =bool()
+var startmove := false
 
 #animation state
 var climb
@@ -150,7 +151,7 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if state_machine.current_state:
 		state_machine.current_state.Update(delta)
-	
+		
 	animation_parameter()
 	
 	if not is_on_floor() and $FallTimer.paused and not state_machine.current_state.name == "Jump":
@@ -193,8 +194,7 @@ func _physics_process(delta: float) -> void:
 	onground_check()
 	set_camera_follow(delta)
 	
-	rotation.y = lerp_angle(rotation.y, camera_T, delta * TURN_SPEED)
-	
+		
 	if state_machine.current_state:
 		state_machine.current_state.Physics_Update(delta)
 	
@@ -238,21 +238,6 @@ func animation_parameter():
 
 
 
-
-
-func request_collision_shape(type: int):
-	if standing_shape:
-		standing_shape.disabled = true
-		crouch_shape.disabled = true
-		jump_shape.disabled = true
-
-		match type:
-			collision_type.STANDING:
-				standing_shape.disabled = false
-			collision_type.CROUCHING:
-				crouch_shape.disabled = false
-			collision_type.JUMPING:
-				jump_shape.disabled = false
 				
 func fall_toggle():
 	state_machine.force_change_state("Jump")

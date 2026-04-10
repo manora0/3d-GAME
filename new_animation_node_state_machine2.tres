@@ -1,0 +1,43 @@
+[gd_resource type="AnimationNodeStateMachine" format=3 uid="uid://d3gaka3scu2ds"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_5xs4v"]
+animation = &"WallRun_Jump_L"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_4emfg"]
+animation = &"WallRun_Jump_R"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ntbx5"]
+animation = &"WallRun_L"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_t4n31"]
+animation = &"WallRun_R"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_r6bkq"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_yygk0"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_m2cil"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_g14s4"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_sissg"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_77s63"]
+
+[resource]
+states/WallRun_Jump_L/node = SubResource("AnimationNodeAnimation_5xs4v")
+states/WallRun_Jump_L/position = Vector2(647, 186)
+states/WallRun_Jump_R/node = SubResource("AnimationNodeAnimation_4emfg")
+states/WallRun_Jump_R/position = Vector2(647, 49)
+states/WallRun_L/node = SubResource("AnimationNodeAnimation_ntbx5")
+states/WallRun_L/position = Vector2(430, 182)
+states/WallRun_R/node = SubResource("AnimationNodeAnimation_t4n31")
+states/WallRun_R/position = Vector2(419, 49)
+transitions = ["WallRun_Jump_R", "End", SubResource("AnimationNodeStateMachineTransition_r6bkq"), "WallRun_Jump_L", "End", SubResource("AnimationNodeStateMachineTransition_yygk0"), "Start", "WallRun_R", SubResource("AnimationNodeStateMachineTransition_m2cil"), "Start", "WallRun_L", SubResource("AnimationNodeStateMachineTransition_g14s4"), "WallRun_L", "WallRun_Jump_L", SubResource("AnimationNodeStateMachineTransition_sissg"), "WallRun_R", "WallRun_Jump_R", SubResource("AnimationNodeStateMachineTransition_77s63")]
+graph_offset = Vector2(-272, -171)
