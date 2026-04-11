@@ -1,0 +1,41 @@
+[gd_scene load_steps=10 format=3 uid="uid://dt3g8w135bnbg"]
+
+[ext_resource type="AudioStream" uid="uid://ea776nynb1rk" path="res://Sound/walk sound 01.mp3" id="1_ojd4i"]
+[ext_resource type="AudioStream" uid="uid://du7bw082xbt87" path="res://Sound/run sound 01.mp3" id="2_8xh3k"]
+[ext_resource type="AudioStream" uid="uid://bqadncdxvortp" path="res://Sound/jump sound 02.mp3" id="3_ndrb0"]
+[ext_resource type="AudioStream" uid="uid://y52jt4318p0w" path="res://Sound/land sound 01.mp3" id="4_r4xra"]
+[ext_resource type="AudioStream" uid="uid://irhy88rw384j" path="res://Sound/Hand sound 02.mp3" id="5_qnb83"]
+[ext_resource type="AudioStream" uid="uid://d2507i80u7ls" path="res://Sound/run scuff sound 01.mp3" id="6_o2jdg"]
+[ext_resource type="AudioStream" uid="uid://cgnw6kcx8xkkw" path="res://Sound/scuff wall sound 01.mp3" id="7_4jyhh"]
+[ext_resource type="AudioStream" uid="uid://vq33i7g2wibq" path="res://Sound/Bgm sound 01.mp3" id="8_awesj"]
+[ext_resource type="AudioStream" uid="uid://6s3tmm6tprs5" path="res://Sound/scuff pivot sound 01.mp3" id="9_r84nq"]
+
+[node name="Audio" type="Node3D"]
+
+[node name="Walk" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("1_ojd4i")
+
+[node name="Run" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_8xh3k")
+
+[node name="Jump" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_ndrb0")
+
+[node name="Land" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_r4xra")
+
+[node name="Hand" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_qnb83")
+
+[node name="Shuffle" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_o2jdg")
+
+[node name="ShuffleWall" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_4jyhh")
+
+[node name="Background" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("8_awesj")
+volume_db = -10.306
+
+[node name="Pivot" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("9_r84nq")

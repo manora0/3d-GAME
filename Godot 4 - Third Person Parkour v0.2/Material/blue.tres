@@ -1,0 +1,6 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://bjjklgrlpcgot"]
+
+[resource]
+resource_name = "M_AnimMan_Default"
+vertex_color_use_as_albedo = true
+albedo_color = Color(0.195052, 0.0984229, 0.024935, 1)

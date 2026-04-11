@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://colw62om73gdu"
+path="res://.godot/imported/scuff wall sound 04.mp3-da7eed6e0c8f020209cfe72da67fb2e7.mp3str"
+
+[deps]
+
+source_file="res://Sound/scuff wall sound 04.mp3"
+dest_files=["res://.godot/imported/scuff wall sound 04.mp3-da7eed6e0c8f020209cfe72da67fb2e7.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

@@ -1,0 +1,40 @@
+[gd_scene format=3 uid="uid://c438on74olhrn"]
+
+[ext_resource type="Script" uid="uid://ljd6y1cixq7h" path="res://fpplayer.gd" id="1_pc3e4"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_83ntj"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_pc3e4"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_51jit"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_yvymu"]
+size = Vector3(1, 0.3, 1)
+
+[node name="CharacterBody3D" type="CharacterBody3D" unique_id=955880717]
+script = ExtResource("1_pc3e4")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=313882063]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_83ntj")
+
+[node name="Mesh" type="MeshInstance3D" parent="." unique_id=995912638]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0056791, 0)
+mesh = SubResource("CapsuleMesh_pc3e4")
+skeleton = NodePath("../Head")
+
+[node name="Nose" type="MeshInstance3D" parent="Mesh" unique_id=2025923939]
+transform = Transform3D(0.44880366, 0, 0, 0, 0.30977166, 0, 0, 0, 0.56669134, 0, 0.2816987, 0.48577303)
+layers = 2
+mesh = SubResource("BoxMesh_51jit")
+
+[node name="Head" type="Node3D" parent="." unique_id=715516695]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0611957, 0)
+
+[node name="Camera3D" type="Camera3D" parent="Head" unique_id=833438423]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0.31528854, 0.27735817)
+current = true
+
+[node name="OnFloorCheck" type="ShapeCast3D" parent="." unique_id=998640564]
+shape = SubResource("BoxShape3D_yvymu")
+target_position = Vector3(0, 0, 0)

@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://xo8q2oo0fakk"
+path="res://.godot/imported/scuff pivot sound 03.mp3-28109ce87fef3a9ecdef367ee3b20c21.mp3str"
+
+[deps]
+
+source_file="res://Sound/scuff pivot sound 03.mp3"
+dest_files=["res://.godot/imported/scuff pivot sound 03.mp3-28109ce87fef3a9ecdef367ee3b20c21.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

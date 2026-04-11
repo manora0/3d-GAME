@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bf5joxd41uq24"
+path="res://.godot/imported/Hand sound 04.mp3-e8bc06be60bd3defe7e5f0f50a2bdea8.mp3str"
+
+[deps]
+
+source_file="res://Sound/Hand sound 04.mp3"
+dest_files=["res://.godot/imported/Hand sound 04.mp3-e8bc06be60bd3defe7e5f0f50a2bdea8.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
