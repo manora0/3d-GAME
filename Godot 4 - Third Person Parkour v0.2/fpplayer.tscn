@@ -2,6 +2,10 @@
 
 [ext_resource type="Script" uid="uid://ljd6y1cixq7h" path="res://fpplayer.gd" id="1_pc3e4"]
 
+[sub_resource type="Curve" id="Curve_pc3e4"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_83ntj"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_pc3e4"]
@@ -13,6 +17,7 @@ size = Vector3(1, 0.3, 1)
 
 [node name="CharacterBody3D" type="CharacterBody3D" unique_id=955880717]
 script = ExtResource("1_pc3e4")
+slide_curve = SubResource("Curve_pc3e4")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=313882063]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -38,3 +43,11 @@ current = true
 [node name="OnFloorCheck" type="ShapeCast3D" parent="." unique_id=998640564]
 shape = SubResource("BoxShape3D_yvymu")
 target_position = Vector3(0, 0, 0)
+
+[node name="Left" type="RayCast3D" parent="." unique_id=404755994]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+target_position = Vector3(-1.5, 0, 0)
+
+[node name="Right" type="RayCast3D" parent="." unique_id=1691271935]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+target_position = Vector3(1.5, 0, 0)
