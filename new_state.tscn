@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://bausox6lkjm8h"]
+
+[ext_resource type="Script" path="res://NewStateMachine.gd" id="1_vf63j"]
+[ext_resource type="Script" path="res://NewState.gd" id="2_td00o"]
+
+[node name="Node" type="Node" unique_id=2115421446]
+script = ExtResource("1_vf63j")
+
+[node name="Node" type="Node" parent="." unique_id=609736283]
+script = ExtResource("2_td00o")

@@ -26,6 +26,9 @@ const JUMP_VELOCITY = 4.5
 #--------------SLIDE SETTINGS-------------------
 
 @export var slide_curve:Curve
+@onready var slide_boost_timer: Timer = $Timers/SlideBoostTimer
+const SLIDE_FRICTION := 0.5
+const SLIDE_FRICTION_EASE_DURATION = 4.0
 const SLIDE_DURATION := 1.5
 const SLIDE_BOOST := 9.0
 var can_boost := true
@@ -34,7 +37,10 @@ var is_sliding := false
 var slide_timer := 0.0
 var slide_direction := Vector3.ZERO
 
-#-----------------------------------------------
+#------------------KICK SETTINGS-----------------
+
+@onready var kick_leg: Node3D = $KickLeg
+#const KICK_EXTENDED_POSITION := 
 
 var horiz_vel := Vector2(0, 0)
 var verti_vel := Vector2(0, 0)
@@ -44,6 +50,8 @@ var ignore_next_mouse: bool = false
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	ignore_next_mouse = true
+	slide_boost_timer.timeout.connect(slide_boost_switch)
+	
 
 func _input(event):
 	if event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
@@ -57,6 +65,9 @@ func _input(event):
 		
 	if Input.is_action_just_pressed("slide") and is_on_floor() and not is_sliding:
 		start_slide()
+	if not Input.is_action_pressed("slide"):
+		is_sliding = false
+	
 
 
 func _physics_process(delta: float) -> void:
@@ -181,6 +192,7 @@ func pull_friction(delta, direction):
 #region SLIDE
 
 func start_slide():
+	slide_timer = 0
 	is_sliding = true
 	var horizontal = Vector2(velocity.x, velocity.z)
 	var direction = Vector3(velocity.x, 0, velocity.z).normalized()
@@ -190,33 +202,28 @@ func start_slide():
 		boost_speed = 0
 	
 	velocity += direction * (boost_speed)
-	pass
+	slide_boost_switch(false)
 	
 	
 func slide(delta):
 	if not is_sliding:
 		return
-	
+
 	slide_timer += delta
-	var progress = clamp(slide_timer / SLIDE_DURATION, 0.0, 1.0)
+	var progress = clamp(slide_timer / SLIDE_FRICTION_EASE_DURATION, 0.0, 1.0)
 	
-	# sample curve - at 0 = full acceleration, at 1 = full friction
 	var curve_value = slide_curve.sample(progress)
-	
-	# blend between acceleration and friction based on curve
 	var horizontal_speed = Vector2(velocity.x, velocity.z).length()
 	
-	# friction scaled by curve
-	var friction = GROUND_FRICTION * curve_value
+	var friction = SLIDE_FRICTION * curve_value
 	var drop = horizontal_speed * friction * delta
 	var new_speed = max(horizontal_speed - drop, 0)
 	
 	if horizontal_speed > 0:
 		velocity.x = velocity.x / horizontal_speed * new_speed
 		velocity.z = velocity.z / horizontal_speed * new_speed
-	
-	# end slide when duration expires or speed drops too low
-	if progress >= 1.0 or new_speed < 1.0:
+		
+	if new_speed < 5.0:
 		is_sliding = false
 
 func camera_bump():
@@ -224,7 +231,13 @@ func camera_bump():
 		head.position.y = move_toward(head.position.y, .5, .1)
 	else:
 		head.position.y = move_toward(head.position.y, 1, .1)
-	pass
+
+func slide_boost_switch(control = true):
+	if control:
+		can_boost = true
+	else: 
+		can_boost = false
+		slide_boost_timer.start()
 
 #endregion
 
@@ -232,3 +245,8 @@ func camera_bump():
 func check_wallrun():
 	return
 #endregion
+
+#region KICK 
+func kick():
+	
+	return

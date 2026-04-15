@@ -1,10 +1,11 @@
 [gd_scene format=3 uid="uid://c438on74olhrn"]
 
 [ext_resource type="Script" uid="uid://ljd6y1cixq7h" path="res://fpplayer.gd" id="1_pc3e4"]
+[ext_resource type="Texture2D" uid="uid://m08ab2svbrl5" path="res://crosshair.png" id="2_51jit"]
 
 [sub_resource type="Curve" id="Curve_pc3e4"]
-_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
-point_count = 2
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.31474102, 0.5691524), 1.811323, 1.811323, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 3
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_83ntj"]
 
@@ -15,8 +16,17 @@ point_count = 2
 [sub_resource type="BoxShape3D" id="BoxShape3D_yvymu"]
 size = Vector3(1, 0.3, 1)
 
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_pc3e4"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_51jit"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_83ntj"]
+
 [node name="CharacterBody3D" type="CharacterBody3D" unique_id=955880717]
 script = ExtResource("1_pc3e4")
+pitch_min = null
+pitch_max = null
+mouse_sensitivity = null
 slide_curve = SubResource("Curve_pc3e4")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=313882063]
@@ -51,3 +61,37 @@ target_position = Vector3(-1.5, 0, 0)
 [node name="Right" type="RayCast3D" parent="." unique_id=1691271935]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 target_position = Vector3(1.5, 0, 0)
+
+[node name="Timers" type="Node3D" parent="." unique_id=1360672108]
+
+[node name="SlideBoostTimer" type="Timer" parent="Timers" unique_id=695412516]
+wait_time = 0.5
+one_shot = true
+
+[node name="KickLeg" type="Node3D" parent="." unique_id=140769862]
+transform = Transform3D(0.14689136, 0, 0, 0, 0.36198524, 0, 0, 0, 1.1578848, 0, 0.6620542, -0.19378614)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="KickLeg" unique_id=55107379]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3011645, 1.1947399)
+physics_material_override = SubResource("PhysicsMaterial_pc3e4")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="KickLeg/StaticBody3D" unique_id=415988190]
+shape = SubResource("BoxShape3D_51jit")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="KickLeg/StaticBody3D" unique_id=1745602947]
+mesh = SubResource("BoxMesh_83ntj")
+
+[node name="Control" type="Control" parent="." unique_id=891954244]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TextureRect" type="TextureRect" parent="Control" unique_id=1426498687]
+layout_mode = 0
+offset_left = 550.0
+offset_top = 250.0
+offset_right = 1630.0
+offset_bottom = 1330.0
+scale = Vector2(0.075, 0.075)
+texture = ExtResource("2_51jit")

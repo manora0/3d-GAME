@@ -320,10 +320,9 @@ material_override = SubResource("StandardMaterial3D_50ias")
 use_collision = true
 size = Vector3(5.004944, 6.387329, 6.1364746)
 
-[node name="Camera" type="Node3D" parent="." unique_id=1270598333 node_paths=PackedStringArray("camera_target")]
+[node name="Camera" type="Node3D" parent="." unique_id=1270598333]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.62654, 3.84616)
 script = ExtResource("9_qkm2y")
-camera_target = NodePath("CameraTarget")
 
 [node name="CameraTarget" type="Node3D" parent="Camera" unique_id=1320801352]
 
