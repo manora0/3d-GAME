@@ -4,8 +4,8 @@
 [ext_resource type="Texture2D" uid="uid://m08ab2svbrl5" path="res://crosshair.png" id="2_51jit"]
 
 [sub_resource type="Curve" id="Curve_pc3e4"]
-_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.31474102, 0.5691524), 1.811323, 1.811323, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
-point_count = 3
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.25896412, 0.27915883), 0.0, 0.0, 0, 0, Vector2(0.73306775, 0.28744435), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 4
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_83ntj"]
 
@@ -16,17 +16,15 @@ point_count = 3
 [sub_resource type="BoxShape3D" id="BoxShape3D_yvymu"]
 size = Vector3(1, 0.3, 1)
 
-[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_pc3e4"]
+[sub_resource type="BoxMesh" id="BoxMesh_83ntj"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_51jit"]
 
-[sub_resource type="BoxMesh" id="BoxMesh_83ntj"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_83ntj"]
+size = Vector3(0.25, 0.25, 1)
 
 [node name="CharacterBody3D" type="CharacterBody3D" unique_id=955880717]
 script = ExtResource("1_pc3e4")
-pitch_min = null
-pitch_max = null
-mouse_sensitivity = null
 slide_curve = SubResource("Curve_pc3e4")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=313882063]
@@ -58,6 +56,9 @@ target_position = Vector3(0, 0, 0)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 target_position = Vector3(-1.5, 0, 0)
 
+[node name="VelocityDir" type="RayCast3D" parent="." unique_id=454228827]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5100601, 0)
+
 [node name="Right" type="RayCast3D" parent="." unique_id=1691271935]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 target_position = Vector3(1.5, 0, 0)
@@ -68,19 +69,6 @@ target_position = Vector3(1.5, 0, 0)
 wait_time = 0.5
 one_shot = true
 
-[node name="KickLeg" type="Node3D" parent="." unique_id=140769862]
-transform = Transform3D(0.14689136, 0, 0, 0, 0.36198524, 0, 0, 0, 1.1578848, 0, 0.6620542, -0.19378614)
-
-[node name="StaticBody3D" type="StaticBody3D" parent="KickLeg" unique_id=55107379]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3011645, 1.1947399)
-physics_material_override = SubResource("PhysicsMaterial_pc3e4")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="KickLeg/StaticBody3D" unique_id=415988190]
-shape = SubResource("BoxShape3D_51jit")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="KickLeg/StaticBody3D" unique_id=1745602947]
-mesh = SubResource("BoxMesh_83ntj")
-
 [node name="Control" type="Control" parent="." unique_id=891954244]
 layout_mode = 3
 anchors_preset = 0
@@ -89,9 +77,27 @@ offset_bottom = 40.0
 
 [node name="TextureRect" type="TextureRect" parent="Control" unique_id=1426498687]
 layout_mode = 0
-offset_left = 550.0
-offset_top = 250.0
-offset_right = 1630.0
-offset_bottom = 1330.0
+offset_left = 536.0
+offset_top = 284.0
+offset_right = 1616.0
+offset_bottom = 1364.0
 scale = Vector2(0.075, 0.075)
 texture = ExtResource("2_51jit")
+
+[node name="KickLeg" type="Node3D" parent="." unique_id=2072472915]
+transform = Transform3D(0.29979855, 0, 0, 0, 0.38562703, 0, 0, 0, 0.9841735, 0, 0.648, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="KickLeg" unique_id=1793183354]
+layers = 4
+mesh = SubResource("BoxMesh_83ntj")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="KickLeg" unique_id=483215446]
+collision_layer = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="KickLeg/StaticBody3D" unique_id=499237762]
+shape = SubResource("BoxShape3D_51jit")
+
+[node name="KickCast" type="ShapeCast3D" parent="KickLeg" unique_id=1818062879]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.9999998, 0, 0, 0)
+shape = SubResource("BoxShape3D_83ntj")
+target_position = Vector3(0, 0, 0)
