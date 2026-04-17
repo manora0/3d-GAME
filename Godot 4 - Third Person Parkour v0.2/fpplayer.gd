@@ -1,9 +1,14 @@
 extends CharacterBody3D
 
-@onready var head = $Head
+#1152 x 648
 
+const SCREEN_HEIGHT = 648
+const SCREEN_WIDTH = 1152
 
 #---------------CAMERA SETTINGS----------------
+
+@onready var head := $Head
+@onready var camera := $Head/Camera3D
 @export var pitch_min: float = -80.0
 @export var pitch_max: float = 80.0
 @export var mouse_sensitivity: float = 0.002
@@ -16,8 +21,8 @@ const MAX_SPEED := 7.0
 const GROUND_ACCEL = 16
 const GROUND_FRICTION = 10.0
 const STOP_SPEED = 2.0
-const AIR_ACCEL = 4
-const AIR_WISH_SPEED_CAP = 6
+const AIR_ACCEL = 6
+const AIR_WISH_SPEED_CAP = 4.0
 const AIR_CONTROL = 50.0
 const SPEED = 7.0
 const JUMP_VELOCITY = 4.5
@@ -61,10 +66,38 @@ const KICK_EXTENDED_POSITION := 1.5
 const KICK_RETRACTED_POSITION := 0.0
 var kick_tween: Tween
 
+#-----------------LATCH SETTINGS-----------------
+
+@onready var latch_cursor: Node3D = $LatchCursor
+@onready var cursor_cast: RayCast3D = $CursorCast
+@export var latch_curve: Curve
+
+const MAX_CAST_DISTANCE := 30.0
+const MAX_CAST_COUNT := 2
+var latch_cast_count := 2
+var can_refresh := true
+var is_latching := false
+
+var latch_start_pos: Vector3
+var latch_initial_dist: float
+var latch_end_pos: Vector3
+const LATCH_SPEED = 30
+
+#---------------DOUBLE JUMP--------------
+
+var can_jump = true
+var can_double_jump = true
+
 var horiz_vel := Vector2(0, 0)
 var verti_vel := Vector2(0, 0)
 
+var jump_delta_time = 0.0
+
 var ignore_next_mouse: bool = false
+
+#-------------UI SETTINGS------------------
+
+@onready var velocity_label = $Control/VelocityLabel
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -91,19 +124,36 @@ func _input(event):
 	
 	
 func _physics_process(delta: float) -> void:
-	if Input.is_action_just_pressed("jump") and is_on_floor():
-		velocity.y = JUMP_VELOCITY
+	if Input.is_action_just_pressed("jump") and is_on_floor() and can_jump:
+		velocity.y += JUMP_VELOCITY
+		can_jump = false
+	if Input.is_action_just_pressed("jump") and not is_on_floor() and can_double_jump:
+		is_latching = false
+		print(velocity.y)
+		double_jump(delta)
+		can_double_jump = false
+		
+	
 	if not is_on_floor() and not is_wallrunning:
 		velocity += get_gravity() * delta
 	
 	var input_dir := Input.get_vector("right", "left", "backward", "forward")
 	var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	
+	latch_cast_cursor()
 	
 	if is_kicking:
 		kick_impulse()
-		
-	if is_on_floor():
+	
+	if Input.is_action_just_pressed("latch"):
+		latch_ask(delta)
+	if is_latching:
+		latch_ask(delta)
+	
+	if is_on_floor() and not is_latching:
+		if not can_double_jump or not can_jump:
+			can_jump = true
+			can_double_jump = true
 		is_wallrunning = false
 		if is_sliding:
 			slide(delta)
@@ -114,7 +164,7 @@ func _physics_process(delta: float) -> void:
 				pull_friction(delta, direction)
 		player_movement(direction, delta)
 		camera_bump()
-	if not is_on_floor():
+	if not is_on_floor() and not is_latching:
 		air_movement(direction, delta)
 		wallrun_check(delta, direction)
 		if wall_jump_timer > 0:
@@ -129,6 +179,7 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 func _process(delta: float) -> void:
+	update_velocity_label()
 	#print(Vector2(velocity.x, velocity.z).length())
 	pass
 	
@@ -150,18 +201,17 @@ func air_movement(direction: Vector3, delta):
 	var wish_vel = direction * MAX_SPEED
 	var wish_dir = wish_vel.normalized()
 	var wish_spd = min(wish_vel.length(), AIR_WISH_SPEED_CAP)
-	#var wish_spd = MAX_SPEED
-	
+
 	var current_speed = velocity.dot(wish_dir)
 	var add_speed = wish_spd - current_speed
-	
+
 	if add_speed <= 0: return
-	
+
 	var accel_speed = AIR_ACCEL * wish_spd * delta
 	accel_speed = min(accel_speed, add_speed)
-	
+
 	velocity += accel_speed * wish_dir
-	air_control(direction, delta)
+	#air_control(direction, delta)
 
 func air_control(direction: Vector3, delta):
 	if direction == Vector3.ZERO:
@@ -356,13 +406,83 @@ func kick():
 	kick_tween.tween_callback(func(): is_kicking = false)
 
 func kick_impulse():
-	
-	kick_cast.get_collision_normal(0)
-	pass	
+	if not kick_cast.is_colliding():
+		return
+	print("impulse")
+	var normal = kick_cast.get_collision_normal(0)
+	velocity = velocity.reflect(normal)
+	is_kicking = false
 #endregion
 
 #region LATCH
 
+func latch_cast_cursor():
+	var origin = camera.project_ray_origin(Vector2(SCREEN_WIDTH/2, SCREEN_HEIGHT/2))
+	var direction = camera.project_ray_normal(Vector2(SCREEN_WIDTH/2, SCREEN_HEIGHT/2))
+	var to = origin + direction * MAX_CAST_DISTANCE
+	var query := PhysicsRayQueryParameters3D.create(origin, to)
+	var result = get_world_3d().direct_space_state.intersect_ray(query)
+	
+	if result:
+		latch_cursor.show()
+		latch_cursor.global_position = result.position
+	else:
+		latch_cursor.hide()
 
+func latch_ask(delta: float):
+	if not is_latching and latch_cursor.visible:
+		is_latching = true
+		latch_start_pos = global_position
+		latch_initial_dist = global_position.distance_to(latch_cursor.global_position)
+		latch_end_pos = latch_cursor.global_position
+	
+	if not is_latching:
+		return
+
+	var current_dist = global_position.distance_to(latch_end_pos)
+	var progress = clamp(1.0 - (current_dist / latch_initial_dist), 0.0, 1.0)
+
+	if current_dist < 0.5 or progress > .85:
+		is_latching = false
+		return
+
+	var speed = latch_curve.sample(progress) * LATCH_SPEED
+	var latch_dir = (latch_end_pos - global_position).normalized()
+	
+	velocity.x = latch_dir.x * speed
+	velocity.y = latch_dir.y * speed
+	velocity.z = latch_dir.z * speed
+	
+#endregion
+
+#region UI
+
+func update_velocity_label():
+	
+	velocity_label.text = "Veloicty: " + str(snapped(Vector2(velocity.x, velocity.z).length(), 0.01))
 
 #endregion
+
+@export var jump_curve: Curve
+var jump_force = 4.5
+var jump_max_force = 14
+
+func double_jump(delta):
+	
+	var horizontal = Vector2(velocity.x, velocity.z).length()
+	var applied_force: float 
+	if velocity.y >= 0.0:
+		var difference = jump_force - velocity.y 
+		applied_force = max(difference, 0.0)
+	else:
+		applied_force = jump_force
+	
+	var position = horizontal / (MAX_SPEED * 2)
+	var scale = jump_curve.sample(position)
+	
+	applied_force *= scale
+	velocity.y += applied_force 
+
+func jump_redirect():
+	
+	pass

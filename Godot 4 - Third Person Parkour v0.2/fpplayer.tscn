@@ -7,11 +7,18 @@
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.25896412, 0.27915883), 0.0, 0.0, 0, 0, Vector2(0.73306775, 0.28744435), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
 point_count = 4
 
+[sub_resource type="Curve" id="Curve_51jit"]
+_data = [Vector2(0, 0.09946716), 0.0, 0.0, 0, 0, Vector2(0.19920321, 1), 0.0, 0.0, 0, 0, Vector2(0.7968128, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.09946716), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="Curve" id="Curve_83ntj"]
+_limits = [1.0, 2.0, 0.0, 1.0]
+_data = [Vector2(0.007968128, 1), 0.0, 0.0, 0, 0, Vector2(1, 2), 0.0, 0.0, 0, 0]
+point_count = 2
+
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_83ntj"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_pc3e4"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_51jit"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_yvymu"]
 size = Vector3(1, 0.3, 1)
@@ -23,9 +30,18 @@ size = Vector3(1, 0.3, 1)
 [sub_resource type="BoxShape3D" id="BoxShape3D_83ntj"]
 size = Vector3(0.25, 0.25, 1)
 
+[sub_resource type="SphereMesh" id="SphereMesh_51jit"]
+radius = 0.1
+height = 0.2
+
 [node name="CharacterBody3D" type="CharacterBody3D" unique_id=955880717]
 script = ExtResource("1_pc3e4")
+pitch_min = null
+pitch_max = null
+mouse_sensitivity = null
 slide_curve = SubResource("Curve_pc3e4")
+latch_curve = SubResource("Curve_51jit")
+jump_curve = SubResource("Curve_83ntj")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=313882063]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -35,11 +51,6 @@ shape = SubResource("CapsuleShape3D_83ntj")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0056791, 0)
 mesh = SubResource("CapsuleMesh_pc3e4")
 skeleton = NodePath("../Head")
-
-[node name="Nose" type="MeshInstance3D" parent="Mesh" unique_id=2025923939]
-transform = Transform3D(0.44880366, 0, 0, 0, 0.30977166, 0, 0, 0, 0.56669134, 0, 0.2816987, 0.48577303)
-layers = 2
-mesh = SubResource("BoxMesh_51jit")
 
 [node name="Head" type="Node3D" parent="." unique_id=715516695]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0611957, 0)
@@ -63,6 +74,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5100601, 0)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 target_position = Vector3(1.5, 0, 0)
 
+[node name="CursorCast" type="RayCast3D" parent="." unique_id=1245845523]
+
 [node name="Timers" type="Node3D" parent="." unique_id=1360672108]
 
 [node name="SlideBoostTimer" type="Timer" parent="Timers" unique_id=695412516]
@@ -78,14 +91,21 @@ offset_bottom = 40.0
 [node name="TextureRect" type="TextureRect" parent="Control" unique_id=1426498687]
 layout_mode = 0
 offset_left = 536.0
-offset_top = 284.0
+offset_top = 280.0
 offset_right = 1616.0
-offset_bottom = 1364.0
+offset_bottom = 1360.0
 scale = Vector2(0.075, 0.075)
 texture = ExtResource("2_51jit")
 
+[node name="VelocityLabel" type="Label" parent="Control" unique_id=402685256]
+layout_mode = 0
+offset_top = 608.0
+offset_right = 144.0
+offset_bottom = 648.0
+
 [node name="KickLeg" type="Node3D" parent="." unique_id=2072472915]
 transform = Transform3D(0.29979855, 0, 0, 0, 0.38562703, 0, 0, 0, 0.9841735, 0, 0.648, 0)
+visible = false
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="KickLeg" unique_id=1793183354]
 layers = 4
@@ -100,4 +120,11 @@ shape = SubResource("BoxShape3D_51jit")
 [node name="KickCast" type="ShapeCast3D" parent="KickLeg" unique_id=1818062879]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.9999998, 0, 0, 0)
 shape = SubResource("BoxShape3D_83ntj")
-target_position = Vector3(0, 0, 0)
+target_position = Vector3(0, 0, 0.5)
+collide_with_areas = true
+
+[node name="LatchCursor" type="Node3D" parent="." unique_id=794879646]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.065, 0, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="LatchCursor" unique_id=2047453495]
+mesh = SubResource("SphereMesh_51jit")
