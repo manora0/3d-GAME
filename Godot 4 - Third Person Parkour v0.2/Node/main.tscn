@@ -6,6 +6,7 @@
 [ext_resource type="Material" uid="uid://bquocw2a8n271" path="res://Environments/Materials/GreyGrid.material" id="6_xgmmt"]
 [ext_resource type="Texture2D" uid="uid://bn8wfhbs1omgo" path="res://Environments/grids/Dark/texture_08.png" id="7_853x7"]
 [ext_resource type="Texture2D" uid="uid://78pehu0r5g6w" path="res://Environments/grids/Dark/texture_04.png" id="8_ex15a"]
+[ext_resource type="PackedScene" uid="uid://bbcfk88hrc88s" path="res://latch.tscn" id="8_gb3tn"]
 [ext_resource type="PackedScene" uid="uid://c438on74olhrn" path="res://fpplayer.tscn" id="9_gb3tn"]
 [ext_resource type="Script" uid="uid://cxtgyo7wsii4j" path="res://Script/Camera.gd" id="9_qkm2y"]
 
@@ -344,3 +345,7 @@ collision_mask = 16387
 size = Vector3(0.863281, 6.10303, 24.39695)
 
 [node name="CharacterBody3D" parent="." unique_id=955880717 instance=ExtResource("9_gb3tn")]
+
+[node name="latch" parent="." unique_id=1947508232 instance=ExtResource("8_gb3tn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.017558098, 0.7089646, 3.0990806)
+collision_layer = 8

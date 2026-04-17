@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://bbcfk88hrc88s"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_881w2"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jral3"]
+albedo_color = Color(0.5137255, 0.06666667, 1, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_hy38f"]
+
+[sub_resource type="TorusMesh" id="TorusMesh_ewt7x"]
+ring_segments = 3
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_se1o3"]
+
+[node name="StaticBody3D" type="StaticBody3D" unique_id=1947508232]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=334378241]
+shape = SubResource("SphereShape3D_881w2")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=2033006518]
+material_override = SubResource("StandardMaterial3D_jral3")
+mesh = SubResource("SphereMesh_hy38f")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="." unique_id=316672304]
+transform = Transform3D(0.595, 0, 0, 0, 0.21, 0, 0, 0, 0.595, 0, 0, 0)
+mesh = SubResource("TorusMesh_ewt7x")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="MeshInstance3D2" unique_id=2037256476]
+transform = Transform3D(-0.024341699, -0.34860823, 0, 2.7892845, -0.003042256, 0, 0, 0, 1.03, 0, 0, 0)
+material_override = SubResource("StandardMaterial3D_se1o3")
+mesh = SubResource("TorusMesh_ewt7x")

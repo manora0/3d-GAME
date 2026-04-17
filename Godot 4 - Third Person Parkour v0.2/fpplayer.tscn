@@ -8,7 +8,7 @@ _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.25896412, 0.27915883), 0.0, 0.
 point_count = 4
 
 [sub_resource type="Curve" id="Curve_51jit"]
-_data = [Vector2(0, 0.09946716), 0.0, 0.0, 0, 0, Vector2(0.19920321, 1), 0.0, 0.0, 0, 0, Vector2(0.7968128, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.09946716), 0.0, 0.0, 0, 0]
+_data = [Vector2(0, 0.49438208), 0.0, 0.0, 0, 0, Vector2(0.19920321, 1), 0.0, 0.0, 0, 0, Vector2(0.7968128, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.09946716), 0.0, 0.0, 0, 0]
 point_count = 4
 
 [sub_resource type="Curve" id="Curve_83ntj"]
@@ -25,8 +25,6 @@ size = Vector3(1, 0.3, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_83ntj"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_51jit"]
-
 [sub_resource type="BoxShape3D" id="BoxShape3D_83ntj"]
 size = Vector3(0.25, 0.25, 1)
 
@@ -36,9 +34,6 @@ height = 0.2
 
 [node name="CharacterBody3D" type="CharacterBody3D" unique_id=955880717]
 script = ExtResource("1_pc3e4")
-pitch_min = null
-pitch_max = null
-mouse_sensitivity = null
 slide_curve = SubResource("Curve_pc3e4")
 latch_curve = SubResource("Curve_51jit")
 jump_curve = SubResource("Curve_83ntj")
@@ -103,24 +98,25 @@ offset_top = 608.0
 offset_right = 144.0
 offset_bottom = 648.0
 
+[node name="LatchLabel" type="Label" parent="Control" unique_id=925056066]
+layout_mode = 0
+offset_left = -1.0
+offset_top = 572.0
+offset_right = 153.0
+offset_bottom = 611.0
+
 [node name="KickLeg" type="Node3D" parent="." unique_id=2072472915]
 transform = Transform3D(0.29979855, 0, 0, 0, 0.38562703, 0, 0, 0, 0.9841735, 0, 0.648, 0)
-visible = false
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="KickLeg" unique_id=1793183354]
 layers = 4
 mesh = SubResource("BoxMesh_83ntj")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="KickLeg" unique_id=483215446]
-collision_layer = 2
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="KickLeg/StaticBody3D" unique_id=499237762]
-shape = SubResource("BoxShape3D_51jit")
-
 [node name="KickCast" type="ShapeCast3D" parent="KickLeg" unique_id=1818062879]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.9999998, 0, 0, 0)
 shape = SubResource("BoxShape3D_83ntj")
 target_position = Vector3(0, 0, 0.5)
+collision_mask = 8
 collide_with_areas = true
 
 [node name="LatchCursor" type="Node3D" parent="." unique_id=794879646]

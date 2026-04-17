@@ -27,6 +27,9 @@ const AIR_CONTROL = 50.0
 const SPEED = 7.0
 const JUMP_VELOCITY = 4.5
 
+const STRAFE_LURCH_BLEND := 0.35
+const STRAFE_LURCH_MIN_SPEED := 4.0
+
 #--------------SLIDE SETTINGS-------------------
 
 @export var slide_curve:Curve
@@ -47,6 +50,8 @@ var slide_direction := Vector3.ZERO
 @onready var right_ray: RayCast3D = $Right
 @onready var velocity_dir_ray: RayCast3D = $VelocityDir
 const WALLRUN_GRAVITY := 2.0
+const WALLRUN_MAX_SPEED := 15.0
+const WALLRUN_ACCEL := 10.0
 const WALL_JUMP_HORIZONTAL := 8.0
 const WALL_JUMP_VERTICAL := 5.5
 const WALL_JUMP_DECAY_TIME := 0.5
@@ -95,14 +100,21 @@ var jump_delta_time = 0.0
 
 var ignore_next_mouse: bool = false
 
+var prev_strafe_input := 0.0
+var was_on_floor := false
+
 #-------------UI SETTINGS------------------
 
 @onready var velocity_label = $Control/VelocityLabel
+@onready var latch_label = $Control/LatchLabel
+
+var kick_rest_pos: Vector3
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	ignore_next_mouse = true
 	slide_boost_timer.timeout.connect(slide_boost_switch)
+	kick_rest_pos = kick_leg.position
 	
 
 func _input(event):
@@ -127,11 +139,12 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("jump") and is_on_floor() and can_jump:
 		velocity.y += JUMP_VELOCITY
 		can_jump = false
-	if Input.is_action_just_pressed("jump") and not is_on_floor() and can_double_jump:
-		is_latching = false
-		print(velocity.y)
-		double_jump(delta)
+	if Input.is_action_just_pressed("jump") and not is_on_floor() and can_double_jump and not is_wallrunning:
 		can_double_jump = false
+		if is_latching:
+			is_latching = false
+			can_double_jump = true
+		double_jump(delta)
 		
 	
 	if not is_on_floor() and not is_wallrunning:
@@ -150,6 +163,9 @@ func _physics_process(delta: float) -> void:
 	if is_latching:
 		latch_ask(delta)
 	
+	if is_on_floor() and not was_on_floor and Input.is_action_pressed("slide") and not is_sliding:
+		start_slide()
+
 	if is_on_floor() and not is_latching:
 		if not can_double_jump or not can_jump:
 			can_jump = true
@@ -166,6 +182,7 @@ func _physics_process(delta: float) -> void:
 		camera_bump()
 	if not is_on_floor() and not is_latching:
 		air_movement(direction, delta)
+		#strafe_lurch(direction)
 		wallrun_check(delta, direction)
 		if wall_jump_timer > 0:
 			wall_jump_timer -= delta
@@ -176,6 +193,7 @@ func _physics_process(delta: float) -> void:
 					velocity.x = velocity.x / h_speed * new_speed
 					velocity.z = velocity.z / h_speed * new_speed
 		
+	was_on_floor = is_on_floor()
 	move_and_slide()
 
 func _process(delta: float) -> void:
@@ -343,28 +361,32 @@ func wallrun_check(delta, direction):
 		
 	if not is_on_floor() and (on_wall_rh or on_wall_lh or on_wall_vel):
 		if not is_wallrunning:
-			print(on_wall_lh, on_wall_rh, on_wall_vel)
 			is_wallrunning = true
+			can_double_jump = true
 			if on_wall_vel:
 				wall_normal = velocity_dir_ray.get_collision_normal()
-				wallrun_side = "vel"
 			elif on_wall_lh:
 				wall_normal = left_ray.get_collision_normal()
-				wallrun_side = "left"
 			else:
 				wall_normal = right_ray.get_collision_normal()
-				wallrun_side = "right"
 				
-		# project velocity along wall
 		var along_wall = wall_normal.cross(Vector3.UP).normalized()
 		var horizontal_vel = Vector3(velocity.x, 0, velocity.z)
 		if along_wall.dot(horizontal_vel) < 0:
 			along_wall = -along_wall
 		var projected = along_wall * horizontal_vel.dot(along_wall)
-				
+
 		velocity.x = projected.x
 		velocity.z = projected.z
 		velocity.y += Vector3.DOWN.y * WALLRUN_GRAVITY * delta
+
+		var input_dir := Input.get_vector("right", "left", "backward", "forward")
+		if input_dir != Vector2.ZERO:
+			var h_speed = Vector2(velocity.x, velocity.z).length()
+			if h_speed < WALLRUN_MAX_SPEED:
+				var add = min(WALLRUN_ACCEL * delta, WALLRUN_MAX_SPEED - h_speed)
+				velocity.x += along_wall.x * add
+				velocity.z += along_wall.z * add
 		
 		var active_ray = left_ray if on_wall_lh else right_ray
 		if active_ray.is_colliding():
@@ -373,7 +395,7 @@ func wallrun_check(delta, direction):
 			global_position = global_position.lerp(target_pos, 10.0 * delta)
 		
 		if Input.is_action_just_pressed("jump"):
-			velocity = wall_normal * WALL_JUMP_HORIZONTAL
+			velocity += wall_normal * WALL_JUMP_HORIZONTAL
 			velocity.y = WALL_JUMP_VERTICAL
 			wall_jump_decel = Vector2(velocity.x, velocity.z).length() / WALL_JUMP_DECAY_TIME
 			wall_jump_timer = WALL_JUMP_DECAY_TIME
@@ -397,16 +419,24 @@ func wallrun_check(delta, direction):
 func kick():
 	if kick_tween:
 		kick_tween.kill()
-		kick_leg.position.z = 0.0
+		kick_leg.position = kick_rest_pos
 	is_kicking = true
+	var cam_fwd = -camera.global_basis.z
+	var kick_dir = global_basis.inverse() * cam_fwd
+	var extended_pos = kick_rest_pos + kick_dir * KICK_EXTENDED_POSITION
 	kick_tween = create_tween()
-	kick_tween.tween_property(kick_leg, "position:z", KICK_EXTENDED_POSITION, 0.1)
+	kick_tween.tween_property(kick_leg, "position", extended_pos, 0.05)
 	kick_tween.tween_interval(0.2)
-	kick_tween.tween_property(kick_leg, "position:z", KICK_RETRACTED_POSITION, 0.3)
+	kick_tween.tween_property(kick_leg, "position", kick_rest_pos, 0.3)
 	kick_tween.tween_callback(func(): is_kicking = false)
 
 func kick_impulse():
 	if not kick_cast.is_colliding():
+		return
+	var collider := kick_cast.get_collider(0)
+	print(collider.name)
+	if collider.name == "latch":
+		latch_cast_count += 1
 		return
 	print("impulse")
 	var normal = kick_cast.get_collision_normal(0)
@@ -458,7 +488,7 @@ func latch_ask(delta: float):
 #region UI
 
 func update_velocity_label():
-	
+	latch_label.text = "Dash Count: " + str(latch_cast_count)
 	velocity_label.text = "Veloicty: " + str(snapped(Vector2(velocity.x, velocity.z).length(), 0.01))
 
 #endregion
@@ -468,13 +498,14 @@ var jump_force = 4.5
 var jump_max_force = 14
 
 func double_jump(delta):
-	
+	print('jumped')
 	var horizontal = Vector2(velocity.x, velocity.z).length()
 	var applied_force: float 
 	if velocity.y >= 0.0:
 		var difference = jump_force - velocity.y 
 		applied_force = max(difference, 0.0)
 	else:
+		velocity.y = 0
 		applied_force = jump_force
 	
 	var position = horizontal / (MAX_SPEED * 2)
@@ -483,6 +514,31 @@ func double_jump(delta):
 	applied_force *= scale
 	velocity.y += applied_force 
 
-func jump_redirect():
-	
-	pass
+const STRAFE_LURCH_WINDOW = 1.0
+const strafe_lurch_timer = 0.0
+
+
+func strafe_lurch(direction: Vector3):
+	if direction == Vector3.ZERO:
+		return
+
+	var input = Input.get_vector("right", "left", "backward", "forward")
+	var strafe = input.x
+
+	# Only trigger on a fresh strafe press, not while held
+	var just_strafed = abs(strafe) > 0.2 and abs(prev_strafe_input) <= 0.2
+	prev_strafe_input = strafe
+
+	if not just_strafed:
+		return
+
+	var h_vel = Vector3(velocity.x, 0, velocity.z)
+	var h_speed = h_vel.length()
+
+	if h_speed < STRAFE_LURCH_MIN_SPEED:
+		return
+
+	# Redirect horizontal velocity toward the strafe direction, preserving speed
+	var new_dir = h_vel.normalized().lerp(direction.normalized(), STRAFE_LURCH_BLEND).normalized()
+	velocity.x = new_dir.x * h_speed
+	velocity.z = new_dir.z * h_speed
