@@ -13,7 +13,7 @@ point_count = 4
 
 [sub_resource type="Curve" id="Curve_83ntj"]
 _limits = [1.0, 2.0, 0.0, 1.0]
-_data = [Vector2(0.007968128, 1), 0.0, 0.0, 0, 0, Vector2(1, 2), 0.0, 0.0, 0, 0]
+_data = [Vector2(0.007968128, 1), 0.0, 0.0, 0, 0, Vector2(0.98571426, 1.7528089), 0.0, 0.0, 0, 0]
 point_count = 2
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_83ntj"]
@@ -31,6 +31,9 @@ size = Vector3(0.25, 0.25, 1)
 [sub_resource type="SphereMesh" id="SphereMesh_51jit"]
 radius = 0.1
 height = 0.2
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_51jit"]
+height = 1.0
 
 [node name="CharacterBody3D" type="CharacterBody3D" unique_id=955880717]
 script = ExtResource("1_pc3e4")
@@ -94,16 +97,17 @@ texture = ExtResource("2_51jit")
 
 [node name="VelocityLabel" type="Label" parent="Control" unique_id=402685256]
 layout_mode = 0
-offset_top = 608.0
-offset_right = 144.0
-offset_bottom = 648.0
+offset_left = 1.0
+offset_top = 561.0
+offset_right = 145.0
+offset_bottom = 601.0
 
 [node name="LatchLabel" type="Label" parent="Control" unique_id=925056066]
 layout_mode = 0
-offset_left = -1.0
-offset_top = 572.0
-offset_right = 153.0
-offset_bottom = 611.0
+offset_left = 1.0
+offset_top = 505.0
+offset_right = 155.0
+offset_bottom = 544.0
 
 [node name="KickLeg" type="Node3D" parent="." unique_id=2072472915]
 transform = Transform3D(0.29979855, 0, 0, 0, 0.38562703, 0, 0, 0, 0.9841735, 0, 0.648, 0)
@@ -124,3 +128,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.065, 0, 0)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="LatchCursor" unique_id=2047453495]
 mesh = SubResource("SphereMesh_51jit")
+
+[node name="SlideCollision" type="CollisionShape3D" parent="." unique_id=1218138698]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.50193346, 0)
+shape = SubResource("CapsuleShape3D_51jit")
+disabled = true
