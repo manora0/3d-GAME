@@ -1,5 +1,9 @@
 extends CharacterBody3D
 
+signal fired
+signal latched(charges: int)
+signal latch_regained(charges: int)
+
 #1152 x 648
 
 const SCREEN_HEIGHT = 648.0
@@ -92,6 +96,14 @@ var can_kick := true
 @onready var cursor_cast: RayCast3D = $CursorCast
 @export var latch_curve: Curve
 
+## Base offset for the beam start, in camera-local space (right, up, forward).
+@export var beam_origin_offset: Vector3 = Vector3(0.25, -0.2, 0.0)
+## AnimatedSprite2D showing the hand — used to look up per-frame offsets below.
+@export var beam_hand_sprite: AnimatedSprite2D
+## Per-frame additional offsets in camera-local space (right, up, forward).
+## Index matches the sprite frame number. Extend the array to cover all frames.
+@export var beam_frame_offsets: Array[Vector3] = []
+
 const MAX_CAST_DISTANCE := 30.0
 const MAX_CAST_COUNT := 2
 var latch_cast_count := 2
@@ -102,6 +114,11 @@ var latch_start_pos: Vector3
 var latch_initial_dist: float
 var latch_end_pos: Vector3
 const LATCH_SPEED = 30
+
+var latch_pending := false
+var latch_pending_pos: Vector3
+
+var latch_beam_mesh: MeshInstance3D
 
 #---------------DOUBLE JUMP--------------
 
@@ -118,6 +135,10 @@ var ignore_next_mouse: bool = false
 var prev_strafe_input := 0.0
 var was_on_floor := false
 
+var latch_penalty_timer := 0.0
+const LATCH_ACCEL_PENALTY_DURATION := .25
+const LATCH_ACCEL_PENALTY_FACTOR := 0.1
+
 #-------------UI SETTINGS------------------
 
 @onready var velocity_label = $Control/VelocityLabel
@@ -130,9 +151,70 @@ func _ready():
 	ignore_next_mouse = true
 	slide_boost_timer.timeout.connect(slide_boost_switch)
 	kick_rest_pos = kick_leg.position
+	_setup_latch_beam()
+
+func _setup_latch_beam():
+	latch_beam_mesh = MeshInstance3D.new()
+	var cyl := CylinderMesh.new()
+	cyl.top_radius = 0.06
+	cyl.bottom_radius = 0.06
+	cyl.height = 1.0
+	latch_beam_mesh.mesh = cyl
+
+	var mat := StandardMaterial3D.new()
+	mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	mat.albedo_color = Color(0.75, 0.1, 1.0)
+	mat.emission_enabled = true
+	mat.emission = Color(0.75, 0.1, 1.0)
+	mat.emission_energy_multiplier = 4.0
+	mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	mat.albedo_color.a = 0.85
+	latch_beam_mesh.material_override = mat
+	latch_beam_mesh.visible = false
+	add_child(latch_beam_mesh)
+
+func _get_hand_pos() -> Vector3:
+	var offset := beam_origin_offset
+	if beam_hand_sprite and beam_frame_offsets.size() > beam_hand_sprite.frame:
+		offset += beam_frame_offsets[beam_hand_sprite.frame]
+	return camera.global_position \
+		+ camera.global_basis.x * offset.x \
+		+ camera.global_basis.y * offset.y \
+		+ camera.global_basis.z * offset.z
+
+func _update_latch_beam_visuals() -> void:
+	var active := is_latching or latch_pending
+	if not active:
+		latch_beam_mesh.visible = false
+		return
+
+	var hand_pos := _get_hand_pos()
+	var target_pos := latch_end_pos if is_latching else latch_pending_pos
+	var diff := target_pos - hand_pos
+	var dist := diff.length()
+	if dist < 0.05:
+		latch_beam_mesh.visible = false
+		return
+
+	latch_beam_mesh.visible = true
+	var dir := diff / dist
+	var right_vec: Vector3
+	if abs(dir.dot(Vector3.UP)) < 0.99:
+		right_vec = dir.cross(Vector3.UP).normalized()
+	else:
+		right_vec = dir.cross(Vector3.FORWARD).normalized()
+	var fwd_vec := right_vec.cross(dir).normalized()
+	var r := 0.025
+	var scaled_basis := Basis(right_vec * r, dir * dist, fwd_vec * r)
+	latch_beam_mesh.global_transform = Transform3D(scaled_basis, hand_pos + diff * 0.5)
 	
 
+func restart_game() -> void:
+	get_tree().reload_current_scene()
+
 func _input(event):
+	if Input.is_action_just_pressed("restart"):
+		restart_game()
 	if event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
 		y_angle -= event.screen_relative.x * mouse_sensitivity
 		x_angle += event.screen_relative.y * mouse_sensitivity
@@ -142,8 +224,9 @@ func _input(event):
 		head.rotation.x = x_angle
 		head.rotation.x = clamp(head.rotation.x, deg_to_rad(pitch_min), deg_to_rad(pitch_max))
 		
-	if Input.is_action_just_pressed("slide") and is_latching:
+	if Input.is_action_just_pressed("slide") and (is_latching or latch_pending):
 		is_latching = false
+		latch_pending = false
 	if Input.is_action_just_pressed("slide") and is_on_floor() and not is_sliding:
 		start_slide()
 	if not Input.is_action_pressed("slide"):
@@ -215,11 +298,29 @@ func _physics_process(delta: float) -> void:
 	if not is_sliding and slide_collision.disabled == false and can_stand():
 		set_slide_collision(false)
 
+	if latch_penalty_timer > 0:
+		latch_penalty_timer -= delta
+		if not is_on_floor() and not is_latching:
+			var h_speed = Vector2(velocity.x, velocity.z).length()
+			if h_speed > 0:
+				var drag = 1.0 - LATCH_ACCEL_PENALTY_FACTOR
+				var new_speed = max(h_speed - drag * h_speed * delta * 3.0, 0.0)
+				velocity.x = velocity.x / h_speed * new_speed
+				velocity.z = velocity.z / h_speed * new_speed
+	elif latch_pending:
+		latch_pending = false
+		is_latching = true
+		latch_start_pos = global_position
+		latch_initial_dist = global_position.distance_to(latch_pending_pos)
+		latch_end_pos = latch_pending_pos
+
 	was_on_floor = is_on_floor()
 	move_and_slide()
 
 func _process(delta: float) -> void:
 	update_velocity_label()
+	_update_latch_beam_globals()
+	_update_latch_beam_visuals()
 	if is_wallrunning:
 		var side = wall_normal.dot(global_basis.x)
 		head.rotation.z = lerp(head.rotation.z, -side * WALLRUN_TILT, 10.0 * delta)
@@ -235,8 +336,9 @@ func player_movement(direction: Vector3, delta):
 	if add_speed <= 0:
 		return
 	
-	var accel_speed = GROUND_ACCEL * delta * MAX_SPEED
-	
+	var penalty = LATCH_ACCEL_PENALTY_FACTOR if latch_penalty_timer > 0 else 1.0
+	var accel_speed = GROUND_ACCEL * delta * MAX_SPEED * penalty
+
 	velocity += accel_speed * direction
 
 
@@ -250,7 +352,8 @@ func air_movement(direction: Vector3, delta):
 
 	if add_speed <= 0: return
 
-	var accel_speed = AIR_ACCEL * wish_spd * delta
+	var penalty = LATCH_ACCEL_PENALTY_FACTOR if latch_penalty_timer > 0 else 1.0
+	var accel_speed = AIR_ACCEL * wish_spd * delta * penalty
 	accel_speed = min(accel_speed, add_speed)
 
 	velocity += accel_speed * wish_dir
@@ -512,7 +615,9 @@ func kick_impulse():
 	var collider := kick_cast.get_collider(0)
 	print(collider.get_groups())
 	if collider.is_in_group("latch") or collider.get_parent().is_in_group("latchw"):
-		latch_cast_count = min(latch_cast_count + 1, MAX_CAST_COUNT)
+		if latch_cast_count < MAX_CAST_COUNT:
+			latch_cast_count += 1
+			latch_regained.emit(latch_cast_count)
 		is_kicking = false
 		return
 	var normal = kick_cast.get_collision_normal(0)
@@ -527,10 +632,12 @@ func shoot():
 		return
 	bullet_count -= 1
 	can_shoot = false
+	fired.emit()
 	get_tree().create_timer(SHOOT_COOLDOWN).timeout.connect(func(): can_shoot = true)
 
 	var dir = -camera.global_basis.z
-	var origin = camera.global_position + camera.global_basis.y * -0.3 + dir * 0.5
+	var gun_screen_pos := Vector2(830, 353)
+	var origin = camera.project_ray_origin(gun_screen_pos) + camera.project_ray_normal(gun_screen_pos) * 0.5
 	var to = camera.global_position + dir * SHOOT_RANGE
 
 	var query := PhysicsRayQueryParameters3D.create(origin, to)
@@ -545,7 +652,9 @@ func shoot():
 		elif result.collider.get_parent().is_in_group("target"):
 			target_node = result.collider.get_parent()
 		if target_node:
-			latch_cast_count = min(latch_cast_count + 1, MAX_CAST_COUNT)
+			if latch_cast_count < MAX_CAST_COUNT:
+				latch_cast_count += 1
+				latch_regained.emit(latch_cast_count)
 			if target_node.has_method("on_shot"):
 				target_node.on_shot()
 
@@ -572,14 +681,14 @@ func latch_cast_cursor():
 		latch_cursor.hide()
 
 func latch_ask(delta: float):
-	if not is_latching and latch_cursor.visible:
+	if not is_latching and not latch_pending and latch_cursor.visible:
 		if latch_cast_count <= 0:
 			return
 		latch_cast_count -= 1
-		is_latching = true
-		latch_start_pos = global_position
-		latch_initial_dist = global_position.distance_to(latch_cursor.global_position)
-		latch_end_pos = latch_cursor.global_position
+		latched.emit(latch_cast_count)
+		latch_pending = true
+		latch_pending_pos = latch_cursor.global_position
+		latch_penalty_timer = LATCH_ACCEL_PENALTY_DURATION
 	
 	if not is_latching:
 		return
@@ -599,6 +708,14 @@ func latch_ask(delta: float):
 	velocity.z = latch_dir.z * speed
 	
 #endregion
+
+func _update_latch_beam_globals() -> void:
+	var active = is_latching or latch_pending
+	RenderingServer.global_shader_parameter_set("latch_beam_intensity", 1.5 if active else 0.0)
+	if active:
+		var end_pos = latch_end_pos if is_latching else latch_pending_pos
+		RenderingServer.global_shader_parameter_set("latch_beam_start", _get_hand_pos())
+		RenderingServer.global_shader_parameter_set("latch_beam_end", end_pos)
 
 #region UI
 

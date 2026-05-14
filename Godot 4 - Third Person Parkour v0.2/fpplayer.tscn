@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://c438on74olhrn"]
 
 [ext_resource type="Script" uid="uid://ljd6y1cixq7h" path="res://fpplayer.gd" id="1_pc3e4"]
-[ext_resource type="Texture2D" uid="uid://m08ab2svbrl5" path="res://crosshair.png" id="2_51jit"]
 
 [sub_resource type="Curve" id="Curve_pc3e4"]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.25896412, 0.27915883), 0.0, 0.0, 0, 0, Vector2(0.73306775, 0.28744435), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
@@ -35,10 +34,11 @@ height = 0.2
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_51jit"]
 height = 1.0
 
-[node name="CharacterBody3D" type="CharacterBody3D" unique_id=955880717]
+[node name="CharacterBody3D" type="CharacterBody3D" unique_id=955880717 groups=["player"]]
 script = ExtResource("1_pc3e4")
 slide_curve = SubResource("Curve_pc3e4")
 latch_curve = SubResource("Curve_51jit")
+beam_origin_offset = Vector3(-0.02, 0, 0)
 jump_curve = SubResource("Curve_83ntj")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=313882063]
@@ -81,33 +81,25 @@ wait_time = 0.5
 one_shot = true
 
 [node name="Control" type="Control" parent="." unique_id=891954244]
+visibility_layer = 2
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="TextureRect" type="TextureRect" parent="Control" unique_id=1426498687]
-layout_mode = 0
-offset_left = 536.0
-offset_top = 280.0
-offset_right = 1616.0
-offset_bottom = 1360.0
-scale = Vector2(0.075, 0.075)
-texture = ExtResource("2_51jit")
-
 [node name="VelocityLabel" type="Label" parent="Control" unique_id=402685256]
 layout_mode = 0
 offset_left = 1.0
-offset_top = 561.0
+offset_top = 606.0
 offset_right = 145.0
-offset_bottom = 601.0
+offset_bottom = 646.0
 
 [node name="LatchLabel" type="Label" parent="Control" unique_id=925056066]
 layout_mode = 0
 offset_left = 1.0
-offset_top = 505.0
+offset_top = 477.0
 offset_right = 155.0
-offset_bottom = 544.0
+offset_bottom = 516.0
 
 [node name="KickLeg" type="Node3D" parent="." unique_id=2072472915]
 transform = Transform3D(0.29979855, 0, 0, 0, 0.38562703, 0, 0, 0, 0.9841735, 0, 0.648, 0)

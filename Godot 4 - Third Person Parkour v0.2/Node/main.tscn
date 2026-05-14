@@ -1,14 +1,18 @@
 [gd_scene format=3 uid="uid://dchunfc5rxrwt"]
 
 [ext_resource type="Script" uid="uid://bwvvbndm0ol8a" path="res://Scripts/target.gd" id="4_wiojm"]
+[ext_resource type="Script" uid="uid://ci0ddi160x7ug" path="res://Scripts/zone_timer.gd" id="6_wiojm"]
+[ext_resource type="PackedScene" uid="uid://c6fglwgnh1miw" path="res://hud.tscn" id="7_v2i2j"]
 [ext_resource type="PackedScene" uid="uid://bbcfk88hrc88s" path="res://latch.tscn" id="8_gb3tn"]
 [ext_resource type="PackedScene" uid="uid://c438on74olhrn" path="res://fpplayer.tscn" id="9_gb3tn"]
 [ext_resource type="Script" uid="uid://cxtgyo7wsii4j" path="res://Script/Camera.gd" id="9_qkm2y"]
 [ext_resource type="PackedScene" uid="uid://cwly0sm0ijt5a" path="res://target.tscn" id="10_gb3tn"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_osake"]
-sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
-ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+sky_top_color = Color(0.105369605, 9.62615e-08, 0.6412783, 1)
+sky_horizon_color = Color(0.007843138, 0.09803922, 0.15686275, 1)
+ground_bottom_color = Color(0.03749667, 2.6112437e-05, 0.076313145, 1)
+ground_horizon_color = Color(0.023529412, 0.105882354, 0.15686275, 1)
 
 [sub_resource type="Sky" id="Sky_y5d8w"]
 sky_material = SubResource("ProceduralSkyMaterial_osake")
@@ -29,6 +33,27 @@ albedo_color = Color(0.4392157, 1, 1, 1)
 lightmap_size_hint = Vector2i(14, 21)
 material = SubResource("StandardMaterial3D_eea15")
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_ykqny"]
+size = Vector3(19.638138, 18.430115, 26.181152)
+
+[sub_resource type="Shader" id="Shader_wiojm"]
+code = "shader_type canvas_item;
+
+  uniform sampler2D SCREEN_TEXTURE : hint_screen_texture, filter_nearest;
+  uniform float pixel_size : hint_range(1.0, 32.0) = 1.0;
+  uniform vec2 viewport_size = vec2(1280.0, 720.0);
+
+  void fragment() {
+      vec2 pixelated_uv = floor(UV * viewport_size / pixel_size) * pixel_size / viewport_size;
+      COLOR = texture(SCREEN_TEXTURE, pixelated_uv);
+  }
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ykqny"]
+shader = SubResource("Shader_wiojm")
+shader_parameter/pixel_size = 4.000000142499999
+shader_parameter/viewport_size = Vector2(1280, 720)
+
 [node name="Main" type="Node3D" unique_id=268909431]
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=901591495]
@@ -47,15 +72,13 @@ environment = SubResource("Environment_ahh15")
 transform = Transform3D(0.872496, 0, -0.48862126, 0, 1, 0, 0.48862126, 0, 0.872496, 119.72425, -3.7382858, -27.307718)
 collision_layer = 8
 
-[node name="StaticBody3D" parent="Land/Objects" unique_id=832710468 groups=["latch"] instance=ExtResource("8_gb3tn")]
-
 [node name="target" parent="Land/Objects" unique_id=1610195942 node_paths=PackedStringArray("linked_wall") instance=ExtResource("10_gb3tn")]
 transform = Transform3D(-0.009180315, 0, 1.0045795, 0, 2, 0, -1.9999685, 0, -0.004611251, 139.76257, 8.989603, 23.874926)
 script = ExtResource("4_wiojm")
 linked_wall = NodePath("../../StaticBody3D")
 
 [node name="target2" parent="Land/Objects" unique_id=1472368260 instance=ExtResource("10_gb3tn")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.3592882, 11.956026)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -12.447741, 10.514222, 11.956026)
 
 [node name="latch2" parent="Land/Objects" unique_id=371915811 groups=["latch"] instance=ExtResource("8_gb3tn")]
 transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 87.213104, 9.552006, 27.726763)
@@ -156,12 +179,12 @@ transform = Transform3D(0.013214382, 0.93596756, 0.35184315, -0.999308, -5.96046
 size = Vector3(1, 10.498962, 10.379311)
 
 [node name="CSGBox3D6" type="CSGBox3D" parent="Land" unique_id=2062368994]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 86.05565, 1.7158699, -56.06064)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 86.05565, 1.7158699, -52.98646)
 use_collision = true
 size = Vector3(30.730469, 11.191895, 1)
 
 [node name="CSGBox3D6" type="CSGBox3D" parent="Land/CSGBox3D6" unique_id=1532061908]
-transform = Transform3D(0.8983575, 0.43926507, -1.9200886e-08, 0, -4.371139e-08, -1, -0.43926507, 0.8983575, -3.9268453e-08, -7.1564484, -4.2927732, 16.167686)
+transform = Transform3D(0.8983575, 0.43926507, -1.9200886e-08, 0, -4.371139e-08, -1, -0.43926507, 0.8983575, -3.9268453e-08, -8.02121, -4.2927732, 14.793041)
 size = Vector3(57.87793, 22.442932, 1)
 
 [node name="CSGBox3D8" type="CSGBox3D" parent="Land" unique_id=1697604251]
@@ -229,3 +252,30 @@ size = Vector3(0.0052052736, 0.01466161, 32.827026)
 transform = Transform3D(14.128074, 0, 0, 0, 19.99471, 0, 0, 0, 1, 1.3230963, 0.10247434, 0.50325394)
 use_collision = true
 size = Vector3(0.0052052736, 0.0021828301, 32.827026)
+
+[node name="Area3D" type="Area3D" parent="." unique_id=999506253 node_paths=PackedStringArray("collision_shape")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.0577493, 10.52961, 0)
+script = ExtResource("6_wiojm")
+collision_shape = NodePath("CollisionShape3D")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=1518033434]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.29692888, 4.9398613, 7.6831055)
+shape = SubResource("BoxShape3D_ykqny")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=278482279]
+layer = -1
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer" unique_id=1390346952]
+material = SubResource("ShaderMaterial_ykqny")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 1, 1, 0)
+metadata/_edit_use_anchors_ = true
+
+[node name="Control" parent="." unique_id=1079996861 instance=ExtResource("7_v2i2j")]
+
+[node name="StaticBody3D2" parent="." unique_id=1819033474 groups=["latch"] instance=ExtResource("8_gb3tn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.523775, 8.094834, 9.062601)

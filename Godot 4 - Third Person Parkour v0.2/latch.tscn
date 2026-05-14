@@ -1,12 +1,22 @@
 [gd_scene format=3 uid="uid://bbcfk88hrc88s"]
 
+[ext_resource type="Texture2D" uid="uid://delbvgdlxfffn" path="res://mytextures/IMG_0052.PNG" id="1_jral3"]
+[ext_resource type="Script" uid="uid://dtosljbcfcegd" path="res://Scripts/latch.gd" id="1_script"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_hy38f"]
+
 [sub_resource type="SphereShape3D" id="SphereShape3D_881w2"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jral3"]
-transparency = 1
-albedo_color = Color(0.5137255, 0.06666667, 1, 1)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hy38f"]
+albedo_color = Color(1, 0.36078432, 1, 1)
+emission_enabled = true
+emission = Color(0.4745098, 0.011764706, 0.6313726, 1)
+emission_energy_multiplier = 7.22
 
-[sub_resource type="SphereMesh" id="SphereMesh_hy38f"]
+[sub_resource type="SphereMesh" id="SphereMesh_ewt7x"]
+material = SubResource("StandardMaterial3D_hy38f")
+radius = 0.3
+height = 0.6
 
 [sub_resource type="TorusMesh" id="TorusMesh_ewt7x"]
 inner_radius = 0.77
@@ -16,15 +26,150 @@ ring_segments = 3
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_se1o3"]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_se1o3"]
+atlas = ExtResource("1_jral3")
+region = Rect2(0, 0, 480, 270)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2r72i"]
+atlas = ExtResource("1_jral3")
+region = Rect2(480, 0, 480, 270)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yntgr"]
+atlas = ExtResource("1_jral3")
+region = Rect2(960, 0, 480, 270)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_075ly"]
+atlas = ExtResource("1_jral3")
+region = Rect2(1440, 0, 480, 270)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oti28"]
+atlas = ExtResource("1_jral3")
+region = Rect2(1920, 0, 480, 270)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j4ubi"]
+atlas = ExtResource("1_jral3")
+region = Rect2(2400, 0, 480, 270)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rv7x0"]
+atlas = ExtResource("1_jral3")
+region = Rect2(2880, 0, 480, 270)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_x5nfv"]
+atlas = ExtResource("1_jral3")
+region = Rect2(3360, 0, 480, 270)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hpsnb"]
+atlas = ExtResource("1_jral3")
+region = Rect2(0, 270, 480, 270)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h237r"]
+atlas = ExtResource("1_jral3")
+region = Rect2(480, 270, 480, 270)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iwvq1"]
+atlas = ExtResource("1_jral3")
+region = Rect2(960, 270, 480, 270)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yetel"]
+atlas = ExtResource("1_jral3")
+region = Rect2(1440, 270, 480, 270)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5rwit"]
+atlas = ExtResource("1_jral3")
+region = Rect2(1920, 270, 480, 270)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w88p5"]
+atlas = ExtResource("1_jral3")
+region = Rect2(2400, 270, 480, 270)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qu8yp"]
+atlas = ExtResource("1_jral3")
+region = Rect2(2880, 270, 480, 270)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8fbbv"]
+atlas = ExtResource("1_jral3")
+region = Rect2(3360, 270, 480, 270)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yw3mn"]
+atlas = ExtResource("1_jral3")
+region = Rect2(0, 540, 480, 270)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fgfpk"]
+atlas = ExtResource("1_jral3")
+region = Rect2(480, 540, 480, 270)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_qp7me"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_se1o3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2r72i")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yntgr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_075ly")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_oti28")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j4ubi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rv7x0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_x5nfv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hpsnb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h237r")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iwvq1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yetel")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5rwit")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w88p5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qu8yp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8fbbv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yw3mn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fgfpk")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
 [node name="StaticBody3D" type="StaticBody3D" unique_id=1947508232]
+physics_material_override = SubResource("PhysicsMaterial_hy38f")
+script = ExtResource("1_script")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=334378241]
 shape = SubResource("SphereShape3D_881w2")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=2033006518]
-material_override = SubResource("StandardMaterial3D_jral3")
 transparency = 0.1
-mesh = SubResource("SphereMesh_hy38f")
+mesh = SubResource("SphereMesh_ewt7x")
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="." unique_id=316672304]
 transform = Transform3D(0.595, 0, 0, 0, 0.21, 0, 0, 0, 0.595, 0, 0, 0)
@@ -34,3 +179,16 @@ mesh = SubResource("TorusMesh_ewt7x")
 transform = Transform3D(-1.2192814e-07, -0.3486215, 0, 2.7893908, -1.523873e-08, 0, 0, 0, 1.03, 0, 0, 0)
 material_override = SubResource("StandardMaterial3D_se1o3")
 mesh = SubResource("TorusMesh_ewt7x")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=794927070]
+layer = -1
+
+[node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="CanvasLayer" unique_id=1142557482]
+transform = Transform3D(1.805, 0, 0, 0, 1.805, 0, 0, 0, 1.805, 0, 0, 0)
+billboard = 1
+texture_filter = 2
+render_priority = 2
+sprite_frames = SubResource("SpriteFrames_qp7me")
+autoplay = "default"
+frame_progress = 0.28867164
+speed_scale = 3.0
